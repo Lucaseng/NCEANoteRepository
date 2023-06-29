@@ -8,6 +8,10 @@ namespace NCEAWebRepo.Data
         public NCEAWebRepoDBContext(DbContextOptions<NCEAWebRepoDBContext> options) : base(options) { }
         public DbSet<User> User { get; set; }
 
+        public DbSet<Subject> Subject { get; set; }
+
+        public DbSet<Standard> Standard { get; set; }
+
         static readonly string connectionString = Environment.GetEnvironmentVariable("ASPNETCORE_CONNECTIONSTRING");
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
