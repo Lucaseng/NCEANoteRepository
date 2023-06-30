@@ -24,9 +24,9 @@ After retrieving this data, I was able to fully map out a schema. Due to the rel
 The Backend is being written using ASP.Net Core.
 
 Technology:
-- ASP.Net Core
-- Enttiy Framework
-- LINQ
+- ASP.Net Core 
+- Entity Framework Core 6.0.6
+- LINQ 4.3.0
 
 ### Backend Architecture
 I am using the classic MVC Architecture to write this API. The file structure (in its current state) is as follows:
