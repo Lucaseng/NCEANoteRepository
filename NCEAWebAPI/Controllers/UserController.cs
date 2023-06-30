@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NCEAWebRepo.Data;
+using NCEAWebRepo.Data.Users;
 using NCEAWebRepo.Dtos;
 
 namespace NCEAWebRepo.Controllers
@@ -8,18 +8,11 @@ namespace NCEAWebRepo.Controllers
     [ApiController]
     public class UserController : Controller
     {
-        private readonly INCEAWebRepo _repository;
+        private readonly IUserRepo _repository;
 
-        public UserController(INCEAWebRepo repository)
+        public UserController(IUserRepo repository)
         {
             _repository = repository;
-        }
-
-        [HttpGet("GetVersion")]
-        public ActionResult<String> GetVersion()
-        {
-            String myVersion = "1.0.0";
-            return Ok(myVersion);
         }
 
         [HttpGet()]

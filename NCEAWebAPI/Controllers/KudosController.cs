@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NCEAWebRepo.Data;
+using NCEAWebRepo.Data.KudosData;
 using NCEAWebRepo.Models;
 
 namespace NCEAWebRepo.Controllers
@@ -8,9 +8,9 @@ namespace NCEAWebRepo.Controllers
     [ApiController]
     public class KudosController : Controller
     {
-        private readonly INCEAWebRepo _repository;
+        private readonly IKudosRepo _repository;
 
-        public KudosController(INCEAWebRepo repository)
+        public KudosController(IKudosRepo repository)
         {
             _repository = repository;
         }

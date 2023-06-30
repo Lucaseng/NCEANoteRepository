@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NCEAWebRepo.Data;
+using NCEAWebRepo.Data.Subjects;
 using NCEAWebRepo.Models;
 
 namespace NCEAWebRepo.Controllers
@@ -8,9 +8,9 @@ namespace NCEAWebRepo.Controllers
     [ApiController]
     public class SubjectController : Controller
     {
-        private readonly INCEAWebRepo _repository;
+        private readonly ISubjectRepo _repository;
 
-        public SubjectController(INCEAWebRepo repository)
+        public SubjectController(ISubjectRepo repository)
         {
             _repository = repository;
         }

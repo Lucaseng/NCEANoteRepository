@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NCEAWebRepo.Data;
+using NCEAWebRepo.Data.Notes;
 using NCEAWebRepo.Models;
 
 namespace NCEAWebRepo.Controllers
@@ -8,8 +8,8 @@ namespace NCEAWebRepo.Controllers
     [ApiController]
     public class NoteController : Controller
     {
-        private readonly INCEAWebRepo _repository;
-        public NoteController(INCEAWebRepo repository)
+        private readonly INoteRepo _repository;
+        public NoteController(INoteRepo repository)
         {
             _repository = repository;
         }
