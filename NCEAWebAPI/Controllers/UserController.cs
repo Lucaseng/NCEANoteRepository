@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NCEAWebRepo.Data;
-using NCEAWebRepo.Models;
+using NCEAWebRepo.Dtos;
 
 namespace NCEAWebRepo.Controllers
 {
@@ -23,9 +23,9 @@ namespace NCEAWebRepo.Controllers
         }
 
         [HttpGet()]
-        public ActionResult<IEnumerable<User>> AllUsers()
+        public ActionResult<IEnumerable<UserOutputDto>> AllUsers()
         {
-            IEnumerable<User> users = _repository.GetUsers();
+            IEnumerable<UserOutputDto> users = _repository.GetModifiedUsers();
             return Ok(users);
         }
 

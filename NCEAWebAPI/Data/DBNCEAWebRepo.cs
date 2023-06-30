@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NCEAWebRepo.Dtos;
 using NCEAWebRepo.Models;
 
 namespace NCEAWebRepo.Data
@@ -16,6 +17,21 @@ namespace NCEAWebRepo.Data
             IEnumerable<User> users = _dbContext.User.ToList<User>();
             return users;
         }
+
+        public IEnumerable<UserOutputDto> GetModifiedUsers()
+        {
+            IEnumerable<User> users = _dbContext.User.ToList<User>();
+            var res = users.Select(a => new UserOutputDto
+            {
+                User_ID = a.User_ID,
+                First_Name = a.First_Name,
+                Last_Name = a.Last_Name,
+                Email = a.Email,
+                School = a.School,
+            });
+            return res;
+        }
+
 
         public IEnumerable<Subject> GetSubjects()
         {
@@ -40,6 +56,8 @@ namespace NCEAWebRepo.Data
             IEnumerable<Kudos> kudos = _dbContext.Kudos.Include("User").Include("Note").ToList<Kudos>();
             return kudos;
         }
+
+
 
 
     }
