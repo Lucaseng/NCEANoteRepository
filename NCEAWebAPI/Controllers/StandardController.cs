@@ -4,7 +4,7 @@ using NCEAWebRepo.Models;
 
 namespace NCEAWebRepo.Controllers
 {
-    [Route("api")]
+    [Route("api/standards")]
     [ApiController]
     public class StandardController : Controller
     {
@@ -15,7 +15,7 @@ namespace NCEAWebRepo.Controllers
             _repository = repository;
         }
 
-        [HttpGet("AllStandards")]
+        [HttpGet()]
         public ActionResult<IEnumerable<Standard>> AllStandards()
         {
             IEnumerable<Standard> standards = _repository.GetStandards();

@@ -3,13 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NCEAWebRepo.Models
 {
-
-    public enum Assessment
-    {
-        Internal,
-        External
-
-    }
     public class Standard
     {
         [Key]

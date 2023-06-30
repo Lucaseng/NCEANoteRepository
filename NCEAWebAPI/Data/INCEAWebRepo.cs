@@ -6,8 +6,11 @@ namespace NCEAWebRepo.Data
     {
         IEnumerable<User> GetUsers();
         IEnumerable<Subject> GetSubjects();
-
         IEnumerable<Standard> GetStandards();
+
+        IEnumerable<Note> GetNotes();
+
+        IEnumerable<Kudos> GetKudos();
 
     }
 }

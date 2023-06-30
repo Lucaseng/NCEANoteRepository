@@ -4,7 +4,7 @@ using NCEAWebRepo.Models;
 
 namespace NCEAWebRepo.Controllers
 {
-    [Route("api")]
+    [Route("api/users")]
     [ApiController]
     public class UserController : Controller
     {
@@ -22,7 +22,7 @@ namespace NCEAWebRepo.Controllers
             return Ok(myVersion);
         }
 
-        [HttpGet("AllUsers")]
+        [HttpGet()]
         public ActionResult<IEnumerable<User>> AllUsers()
         {
             IEnumerable<User> users = _repository.GetUsers();

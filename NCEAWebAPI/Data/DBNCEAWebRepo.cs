@@ -29,6 +29,18 @@ namespace NCEAWebRepo.Data
             return standards;
         }
 
+        public IEnumerable<Note> GetNotes()
+        {
+            IEnumerable<Note> notes = _dbContext.Note.Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").ToList<Note>();
+            return notes;
+        }
+
+        public IEnumerable<Kudos> GetKudos()
+        {
+            IEnumerable<Kudos> kudos = _dbContext.Kudos.Include("User").Include("Note").ToList<Kudos>();
+            return kudos;
+        }
+
 
     }
 }

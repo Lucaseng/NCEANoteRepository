@@ -12,6 +12,10 @@ namespace NCEAWebRepo.Data
 
         public DbSet<Standard> Standard { get; set; }
 
+        public DbSet<Kudos> Kudos { get; set; }
+
+        public DbSet<Note> Note { get; set; }
+
         static readonly string connectionString = Environment.GetEnvironmentVariable("ASPNETCORE_CONNECTIONSTRING");
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

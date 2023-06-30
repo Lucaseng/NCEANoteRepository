@@ -4,23 +4,22 @@ using NCEAWebRepo.Models;
 
 namespace NCEAWebRepo.Controllers
 {
-    [Route("api/subjects")]
+    [Route("api/kudos")]
     [ApiController]
-    public class SubjectController : Controller
+    public class KudosController : Controller
     {
         private readonly INCEAWebRepo _repository;
 
-        public SubjectController(INCEAWebRepo repository)
+        public KudosController(INCEAWebRepo repository)
         {
             _repository = repository;
         }
 
         [HttpGet()]
-        public ActionResult<IEnumerable<Subject>> AllSubjects()
+        public ActionResult<IEnumerable<Kudos>> AllKudos()
         {
-            IEnumerable<Subject> subjects = _repository.GetSubjects();
-            return Ok(subjects);
+            IEnumerable<Kudos> kudos = _repository.GetKudos();
+            return Ok(kudos);
         }
-
     }
 }
