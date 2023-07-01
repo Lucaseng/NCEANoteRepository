@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NCEAWebRepo.Models;
 
 namespace NCEAWebRepo.Data.Standards
@@ -18,6 +19,31 @@ namespace NCEAWebRepo.Data.Standards
             return standards;
         }
 
+        public bool StandardExists(Standard standard)
+        {
+            Standard getStandard = _dbContext.Standard.FirstOrDefault(s => s.Standard_ID == standard.Standard_ID);
+            return getStandard != null;
+        }
+
+        public Standard AddStandard(Standard standard)
+        {
+            Standard newStandard = new Standard
+            {
+                Standard_ID = standard.Standard_ID,
+                Title = standard.Title,
+                Credits = standard.Credits,
+                Assessment = standard.Assessment,
+                Level = standard.Level
+            };
+            //Find Subject in Database and Add it to new object
+            Subject sub = _dbContext.Subject.FirstOrDefault(s => s.Subject_ID == standard.Subject.Subject_ID);
+            newStandard.Subject = sub;
+            //Save into database
+            EntityEntry<Standard> e = _dbContext.Standard.Add(newStandard);
+            Standard myStandard = e.Entity;
+            _dbContext.SaveChanges();
+            return myStandard;
+        }
 
 
     }
