@@ -18,3 +18,22 @@ Technology:
 After retrieving this data, I was able to fully map out a schema. Due to the relational nature of the data, it makes best sense to use a MySQL database.
 
 <img src="https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/b08f015b-210b-46e2-8e66-3d00409157c7" height="400">
+
+## Backend Development
+
+The Backend is being written using ASP.Net Core.
+
+Technology:
+- ASP.Net Core 
+- Entity Framework Core 6.0.6
+- LINQ 4.3.0
+
+### Backend Architecture
+I am using the classic MVC Architecture to write this API. The file structure (in its current state) is as follows:
+
+<img src="https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/8ecb87fa-cdce-40a7-b697-b8f76bfd8982" height="400">
+
+## Project Management
+I am trying out Asana to manage my workflow.
+
+![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/92d2f8e6-8dfe-4012-ab76-c2f0a1d7bc49)
