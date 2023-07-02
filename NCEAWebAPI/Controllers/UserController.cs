@@ -23,6 +23,24 @@ namespace NCEAWebRepo.Controllers
             return Ok(users);
         }
 
+        [HttpGet("id")]
+        public ActionResult<UserOutputDto> GetUserById(int User_ID)
+        {
+            UserOutputDto user = _repository.GetUserById(User_ID);
+            if (user == null)
+            {
+                return BadRequest(new FailDto
+                {
+                    fail = String.Format("The id {0} does not exist!", User_ID)
+                });
+            }
+            else
+            {
+                return Ok(user);
+            }
+
+        }
+
         [HttpPost()]
         public ActionResult<String> AddUser(User user)
         {

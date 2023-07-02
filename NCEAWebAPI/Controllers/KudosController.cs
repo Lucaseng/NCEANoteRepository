@@ -22,6 +22,13 @@ namespace NCEAWebRepo.Controllers
             return Ok(kudos);
         }
 
+        [HttpGet("count")]
+        public ActionResult<int> GetKudosCount(int Note_ID)
+        {
+            int myCount = _repository.GetKudosCount(Note_ID);
+            return Ok(myCount);
+        }
+
         [HttpPost()]
         public ActionResult<String> GiveKudos(KudosInputDto kudos)
         {

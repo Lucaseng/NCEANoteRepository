@@ -35,6 +35,12 @@ namespace NCEAWebRepo.Data.KudosData
             return (IEnumerable<KudosOutputDto>)newKudos;
         }
 
+        public int GetKudosCount(int Note_ID)
+        {
+            int kudos = _dbContext.Kudos.Where(k => k.Note.Note_ID == Note_ID).Count();
+            return kudos;
+        }
+
         public bool CanAwardKudos(KudosInputDto kudos)
         {
             Kudos checkKudos = _dbContext.Kudos.FirstOrDefault(k => k.User.User_ID == kudos.User_ID && k.Note.Note_ID == kudos.Note_ID);

@@ -23,6 +23,21 @@ namespace NCEAWebRepo.Controllers
             return Ok(standards);
         }
 
+        [HttpGet("id")]
+        public ActionResult<Standard> GetStandardById(int Standard_ID)
+        {
+            Standard standard = _repository.GetStandardById(Standard_ID);
+            if (standard == null)
+            {
+                return BadRequest(new FailDto
+                {
+                    fail = String.Format("A Standard with id {0} does not exist!", Standard_ID)
+                });
+            }
+            return Ok(standard);
+
+        }
+
         [HttpPost()]
         public ActionResult<String> AddStandard(StandardInputDto standard)
         {

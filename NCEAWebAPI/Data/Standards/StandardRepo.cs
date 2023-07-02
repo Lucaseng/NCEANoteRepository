@@ -20,6 +20,11 @@ namespace NCEAWebRepo.Data.Standards
             return standards;
         }
 
+        public Standard GetStandardById(int id)
+        {
+            return _dbContext.Standard.Include("Subject").FirstOrDefault(s => s.Standard_ID == id);
+        }
+
         public bool StandardExists(StandardInputDto standard)
         {
             Standard getStandard = _dbContext.Standard.FirstOrDefault(s => s.Standard_ID == standard.Standard_ID);

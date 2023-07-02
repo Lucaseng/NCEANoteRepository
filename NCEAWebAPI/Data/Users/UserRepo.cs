@@ -12,23 +12,35 @@ namespace NCEAWebRepo.Data.Users
             _dbContext = dbContext;
         }
 
+        public UserOutputDto CreateUserOutputDto(User u)
+        {
+            return new UserOutputDto
+            {
+                User_ID = u.User_ID,
+                First_Name = u.First_Name,
+                Last_Name = u.Last_Name,
+                Email = u.Email,
+                School = u.School,
+            };
+        }
+
         public IEnumerable<User> GetUsers()
         {
             IEnumerable<User> users = _dbContext.User.ToList();
             return users;
         }
 
+        public UserOutputDto GetUserById(int id)
+        {
+            User u = _dbContext.User.FirstOrDefault(u => u.User_ID == id);
+            if (u == null) return null;
+            return CreateUserOutputDto(u);
+        }
+
         public IEnumerable<UserOutputDto> GetModifiedUsers()
         {
             IEnumerable<User> users = GetUsers();
-            var res = users.Select(a => new UserOutputDto
-            {
-                User_ID = a.User_ID,
-                First_Name = a.First_Name,
-                Last_Name = a.Last_Name,
-                Email = a.Email,
-                School = a.School,
-            });
+            var res = users.Select(a => CreateUserOutputDto(a));
             return res;
         }
 
