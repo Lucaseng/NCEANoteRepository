@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NCEAWebRepo.Data.Notes;
+using NCEAWebRepo.Dtos;
 using NCEAWebRepo.Models;
 
 namespace NCEAWebRepo.Controllers
@@ -19,6 +20,13 @@ namespace NCEAWebRepo.Controllers
         {
             IEnumerable<Note> notes = _repository.GetNotes();
             return Ok(notes);
+        }
+
+        [HttpPost()]
+        public ActionResult<String> AddNote(NoteInputDto note)
+        {
+            return Ok(_repository.AddNote(note));
+
         }
     }
 }

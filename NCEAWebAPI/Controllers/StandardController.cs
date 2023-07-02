@@ -24,7 +24,7 @@ namespace NCEAWebRepo.Controllers
         }
 
         [HttpPost()]
-        public ActionResult<String> AddStandard(Standard standard)
+        public ActionResult<String> AddStandard(StandardInputDto standard)
         {
 
             //Check if standard exists

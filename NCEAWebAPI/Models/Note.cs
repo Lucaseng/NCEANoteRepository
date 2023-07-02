@@ -9,5 +9,7 @@ namespace NCEAWebRepo.Models
         public Standard Standard { get; set; }
         public User User { get; set; }
         public string File { get; set; }
+
+        public string File_Name { get; set; }
     }
 }

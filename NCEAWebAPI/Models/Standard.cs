@@ -14,13 +14,7 @@ namespace NCEAWebRepo.Models
         public string Assessment { get; set; }
 
         public string Level { get; set; }
-
-
-        //[ForeignKey("Subject")]
-        //public int Subject_ID { get; set; }
         public Subject Subject { get; set; }
-
-
 
     }
 }

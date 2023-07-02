@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using NCEAWebRepo.Dtos;
 using NCEAWebRepo.Models;
 
 namespace NCEAWebRepo.Data.Notes
@@ -16,6 +18,32 @@ namespace NCEAWebRepo.Data.Notes
         {
             IEnumerable<Note> notes = _dbContext.Note.Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").ToList<Note>();
             return notes;
+        }
+
+        public Note AddNote(NoteInputDto note)
+        {
+            //Create a new note
+            Note newNote = new Note
+            {
+                File = note.File,
+                File_Name = note.File_Name,
+            };
+            //Find User in Database
+            User user = _dbContext.User.FirstOrDefault(u => u.User_ID == note.User_ID);
+
+            //Find Standard in Database
+            Standard standard = _dbContext.Standard.Include("Subject").FirstOrDefault(s => s.Standard_ID == note.Standard_ID);
+
+            //Add to note object
+            newNote.User = user;
+            newNote.Standard = standard;
+
+
+            //Save into database
+            EntityEntry<Note> e = _dbContext.Note.Add(newNote);
+            Note myNote = e.Entity;
+            _dbContext.SaveChanges();
+            return myNote;
         }
 
 
