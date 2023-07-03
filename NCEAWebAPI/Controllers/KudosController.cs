@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NCEAWebRepo.Data.KudosData;
 using NCEAWebRepo.Dtos;
 
@@ -29,6 +30,8 @@ namespace NCEAWebRepo.Controllers
             return Ok(myCount);
         }
 
+        [Authorize(AuthenticationSchemes = "UserAuth")]
+        [Authorize(Policy = "UserOnly")]
         [HttpPost()]
         public ActionResult<String> GiveKudos(KudosInputDto kudos)
         {

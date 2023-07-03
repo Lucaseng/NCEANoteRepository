@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NCEAWebRepo.Data.Standards;
 using NCEAWebRepo.Dtos;
 using NCEAWebRepo.Models;
@@ -38,6 +39,8 @@ namespace NCEAWebRepo.Controllers
 
         }
 
+        [Authorize(AuthenticationSchemes = "UserAuth")]
+        [Authorize(Policy = "UserOnly")]
         [HttpPost()]
         public ActionResult<String> AddStandard(StandardInputDto standard)
         {
