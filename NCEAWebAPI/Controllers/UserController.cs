@@ -2,6 +2,7 @@
 using NCEAWebRepo.Data.Users;
 using NCEAWebRepo.Dtos;
 using NCEAWebRepo.Models;
+using System.Text.RegularExpressions;
 
 namespace NCEAWebRepo.Controllers
 {
@@ -44,6 +45,15 @@ namespace NCEAWebRepo.Controllers
         [HttpPost()]
         public ActionResult<String> AddUser(User user)
         {
+            Regex regex = new Regex(@".school.nz$");
+            if (!regex.IsMatch(user.Email))
+            {
+                return BadRequest(new FailDto
+                {
+                    fail = String.Format("Emails must be from a school domain!", user.Email)
+                });
+            }
+
             User c = new User
             {
                 First_Name = user.First_Name,
