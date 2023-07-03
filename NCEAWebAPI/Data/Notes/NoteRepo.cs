@@ -20,6 +20,18 @@ namespace NCEAWebRepo.Data.Notes
             return notes;
         }
 
+        public Note GetNoteByID(int id)
+        {
+            return _dbContext.Note.Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").FirstOrDefault(n => n.Note_ID == id);
+        }
+
+
+        public IEnumerable<Note> GetNotesByStandard(int Standard_ID)
+        {
+            IEnumerable<Note> notes = _dbContext.Note.Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").Where(n => n.Standard.Standard_ID == Standard_ID).ToList<Note>();
+            return notes;
+        }
+
         public Note AddNote(NoteInputDto note)
         {
             //Create a new note

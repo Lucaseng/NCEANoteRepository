@@ -9,5 +9,9 @@ namespace NCEAWebRepo.Data.Notes
 
         public Note AddNote(NoteInputDto note);
 
+        public Note GetNoteByID(int Id);
+
+        public IEnumerable<Note> GetNotesByStandard(int Standard_ID);
+
     }
 }

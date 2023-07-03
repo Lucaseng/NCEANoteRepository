@@ -22,6 +22,31 @@ namespace NCEAWebRepo.Controllers
             return Ok(notes);
         }
 
+        [HttpGet("id")]
+        public ActionResult<Note> GetNotebyId(int id)
+        {
+            Note note = _repository.GetNoteByID(id);
+            if (note == null)
+            {
+                return BadRequest(new FailDto
+                {
+                    fail = String.Format("No note exists with id {0}!", id)
+                });
+            }
+            else
+            {
+                return Ok(note);
+            }
+
+        }
+
+        [HttpGet("standard")]
+        public ActionResult<IEnumerable<Note>> GetNotesByStandard(int Standard_ID)
+        {
+            IEnumerable<Note> notes = _repository.GetNotesByStandard(Standard_ID);
+            return Ok(notes);
+        }
+
         [HttpPost()]
         public ActionResult<String> AddNote(NoteInputDto note)
         {
