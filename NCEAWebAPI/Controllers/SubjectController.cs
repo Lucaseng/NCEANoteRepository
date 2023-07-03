@@ -24,10 +24,8 @@ namespace NCEAWebRepo.Controllers
             return Ok(subjects);
         }
 
-        //Replace with AdminAuth when written...
-
-        [Authorize(AuthenticationSchemes = "UserAuth")]
-        [Authorize(Policy = "UserOnly")]
+        [Authorize(AuthenticationSchemes = "AdminAuthentication")]
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost()]
         public ActionResult<String> AddSubject(Subject subject)
         {

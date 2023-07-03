@@ -13,5 +13,7 @@ namespace NCEAWebRepo.Models
         public string Password { get; set; }
 
         public string School { get; set; }
+
+        public string User_Type { get; set; }
     }
 }

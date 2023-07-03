@@ -20,5 +20,20 @@ namespace NCEAWebRepo.Data.Auth
                 return true;
         }
 
+        public bool ValidAdmin(string email, string password)
+        {
+            User c = _dbContext.User.FirstOrDefault(u => u.Email == email && u.Password == password);
+            if (c == null)
+                return false;
+            else
+            {
+                if (c.User_Type == "Admin")
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
     }
 }

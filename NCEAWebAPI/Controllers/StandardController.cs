@@ -39,8 +39,8 @@ namespace NCEAWebRepo.Controllers
 
         }
 
-        [Authorize(AuthenticationSchemes = "UserAuth")]
-        [Authorize(Policy = "UserOnly")]
+        [Authorize(AuthenticationSchemes = "AdminAuthentication")]
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost()]
         public ActionResult<String> AddStandard(StandardInputDto standard)
         {
