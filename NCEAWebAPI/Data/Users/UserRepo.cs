@@ -37,6 +37,13 @@ namespace NCEAWebRepo.Data.Users
             return CreateUserOutputDto(u);
         }
 
+        public UserOutputDto GetUserByEmail(String email)
+        {
+            User u = _dbContext.User.FirstOrDefault(u => u.Email == email);
+            if (u == null) return null;
+            return CreateUserOutputDto(u);
+        }
+
         public IEnumerable<UserOutputDto> GetModifiedUsers()
         {
             IEnumerable<User> users = GetUsers();
@@ -57,6 +64,15 @@ namespace NCEAWebRepo.Data.Users
             User myUser = e.Entity;
             _dbContext.SaveChanges();
             return myUser;
+
+        }
+
+        public bool ChangePass(String email, String pass)
+        {
+            User u = _dbContext.User.FirstOrDefault(u => u.Email == email);
+            u.Password = BCrypt.Net.BCrypt.HashPassword(pass);
+            _dbContext.SaveChanges();
+            return true;
 
         }
 

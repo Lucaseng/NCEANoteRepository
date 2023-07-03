@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NCEAWebRepo.Data.Users;
 using NCEAWebRepo.Dtos;
 using NCEAWebRepo.Models;
@@ -24,6 +25,17 @@ namespace NCEAWebRepo.Controllers
             return Ok(users);
         }
 
+        [Authorize(AuthenticationSchemes = "UserAuth")]
+        [Authorize(Policy = "UserOnly")]
+        [HttpPatch("password")]
+        public ActionResult<String> ChangePass(String newPass)
+        {
+            var claim = HttpContext.User.Claims.First(c => c.Type == "email");
+            var emailAddress = claim.Value;
+            _repository.ChangePass(emailAddress, newPass);
+            return Ok("Password Succesfully Changed.");
+        }
+
         [HttpGet("id")]
         public ActionResult<UserOutputDto> GetUserById(int User_ID)
         {
@@ -42,6 +54,19 @@ namespace NCEAWebRepo.Controllers
 
         }
 
+
+        [Authorize(AuthenticationSchemes = "UserAuth")]
+        [Authorize(Policy = "UserOnly")]
+        [HttpPost("me")]
+        public ActionResult<UserOutputDto> Auth()
+        {
+            var claim = HttpContext.User.Claims.First(c => c.Type == "email");
+            var emailAddress = claim.Value;
+            return Ok(_repository.GetUserByEmail(emailAddress));
+
+        }
+
+
         [HttpPost()]
         public ActionResult<String> AddUser(User user)
         {
@@ -59,8 +84,9 @@ namespace NCEAWebRepo.Controllers
                 First_Name = user.First_Name,
                 Last_Name = user.Last_Name,
                 Email = user.Email,
-                Password = user.Password,
-                School = user.School
+                Password = BCrypt.Net.BCrypt.HashPassword(user.Password),
+                School = user.School,
+                User_Type = "User",
             };
             if (!_repository.UserExists(c))
             {

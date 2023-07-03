@@ -13,11 +13,14 @@ namespace NCEAWebRepo.Data.Auth
 
         public bool ValidLogin(string email, string password)
         {
-            User c = _dbContext.User.FirstOrDefault(u => u.Email == email && u.Password == password);
+            User c = _dbContext.User.FirstOrDefault(u => u.Email == email);
             if (c == null)
                 return false;
             else
-                return true;
+            {
+                return BCrypt.Net.BCrypt.Verify(password, c.Password);
+            }
+
         }
 
         public bool ValidAdmin(string email, string password)
@@ -27,11 +30,7 @@ namespace NCEAWebRepo.Data.Auth
                 return false;
             else
             {
-                if (c.User_Type == "Admin")
-                {
-                    return true;
-                }
-                return false;
+                return c.User_Type == "Admin";
             }
         }
 

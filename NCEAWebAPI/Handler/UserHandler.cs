@@ -40,6 +40,7 @@ namespace NCEAWebRepo.Handler
 
                 if (_repository.ValidLogin(email, password))
                 {
+
                     var claims = new[] { new Claim("email", email) };
 
                     ClaimsIdentity identity = new ClaimsIdentity(claims, "Basic");

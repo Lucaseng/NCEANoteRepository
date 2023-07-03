@@ -8,7 +8,6 @@ using NCEAWebRepo.Data.Subjects;
 using NCEAWebRepo.Data.Users;
 using NCEAWebRepo.Handler;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -17,6 +16,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+//builder.Services.Configure<IdentityOptions>(options => options.ClaimsIdentity.UserIdClaimType = ClaimTypes.NameIdentifier);
+builder.Services.AddHttpContextAccessor();
 builder.Services
     .AddAuthentication()
     .AddScheme<AuthenticationSchemeOptions, UserHandler>("UserAuth", null)
@@ -33,6 +34,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", policy => policy.RequireClaim("admin"));
     options.AddPolicy("UserOnly", policy => policy.RequireClaim("email"));
 });
+
 
 var app = builder.Build();
 
