@@ -23,6 +23,13 @@ namespace NCEAWebRepo.Controllers
             return Ok(notes);
         }
 
+        [HttpGet("search")]
+        public ActionResult<IEnumerable<NoteOutputDto>> Search(String keyword, int startIndex, int endIndex)
+        {
+            IEnumerable<NoteOutputDto> notes = _repository.SearchNotes(keyword, startIndex, endIndex);
+            return Ok(notes);
+        }
+
         [HttpGet("id")]
         public ActionResult<Note> GetNotebyId(int id)
         {

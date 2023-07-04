@@ -5,7 +5,11 @@ namespace NCEAWebRepo.Data.Notes
 {
     public interface INoteRepo
     {
-        IEnumerable<Note> GetNotes();
+        public IEnumerable<Note> GetNotes();
+
+        //public IEnumerable<Note> SearchNotes(String keyword, int startIndex, int endIndex);
+
+        public IEnumerable<NoteOutputDto> SearchNotes(String keyword, int startIndex, int endIndex);
 
         public Note AddNote(NoteInputDto note);
 

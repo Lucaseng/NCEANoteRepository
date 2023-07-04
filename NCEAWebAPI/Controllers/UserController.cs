@@ -54,7 +54,6 @@ namespace NCEAWebRepo.Controllers
 
         }
 
-
         [Authorize(AuthenticationSchemes = "UserAuth")]
         [Authorize(Policy = "UserOnly")]
         [HttpPost("me")]

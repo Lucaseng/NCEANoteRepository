@@ -20,6 +20,42 @@ namespace NCEAWebRepo.Data.Notes
             return notes;
         }
 
+        public IEnumerable<NoteOutputDto> SearchNotes(String keyword, int startIndex, int endIndex)
+        {
+            //Fetch Notes from Database
+            IEnumerable<Note> notes = _dbContext.Note.Where(n => n.Standard.Title.ToLower().Contains(keyword.ToLower()) || n.Standard.Standard_ID.ToString().Contains(keyword))
+                .Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").
+                Skip(startIndex).Take(endIndex - startIndex + 1).ToList<Note>();
+
+            //Initialise an array of NoteOutputDto objects
+            List<NoteOutputDto> notesArr = new List<NoteOutputDto>();
+            foreach (Note n in notes)
+            {
+                //Get the Kudos Count for each Note, n
+                int kudosCount = _dbContext.Kudos.Where(k => k.Note.Note_ID == n.Note_ID).Count();
+                //Create NoteOutputDto and add it to the array above
+                notesArr.Add(new NoteOutputDto
+                {
+                    Note_ID = n.Note_ID,
+                    Kudos = kudosCount,
+                    File = n.File,
+                    File_Name = n.File_Name,
+                    Standard = n.Standard,
+                    //Create an anonymous UserOutputDto, as we want to hide particular data from the end-users.
+                    User = new UserOutputDto
+                    {
+                        User_ID = n.User.User_ID,
+                        First_Name = n.User.First_Name,
+                        Last_Name = n.User.Last_Name,
+                        Email = n.User.Email,
+                        School = n.User.School,
+                    }
+                });
+            }
+
+            return notesArr.OrderByDescending(n => n.Kudos);
+        }
+
         public Note GetNoteByID(int id)
         {
             return _dbContext.Note.Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").FirstOrDefault(n => n.Note_ID == id);
