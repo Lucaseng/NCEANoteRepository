@@ -37,3 +37,10 @@ I am using the classic MVC Architecture to write this API. The file structure (i
 I am trying out Asana to manage my workflow.
 
 ![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/92d2f8e6-8dfe-4012-ab76-c2f0a1d7bc49)
+
+## Frontend Development
+
+The frontend is being written using React.js and MUI
+
+Initial project setup and sidebar creation has been completed. Routing to different pages has also been accomplished.
+![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/70bdec6a-4e7e-4b7e-852f-f2fa7605ac3a)
