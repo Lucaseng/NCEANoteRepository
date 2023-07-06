@@ -57,6 +57,8 @@ function NoteCard(props) {
         </CardContent>
         <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
           <Button
+            href={item.file}
+            target="_blank"
             variant="contained"
             size="small"
             endIcon={<FileDownloadIcon />}
