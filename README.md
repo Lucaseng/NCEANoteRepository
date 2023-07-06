@@ -28,12 +28,26 @@ Technology:
 - Entity Framework Core 6.0.6
 - LINQ 4.3.0
 
-### Backend Architecture
-I am using the classic MVC Architecture to write this API. The file structure (in its current state) is as follows:
+So far, I have written 19 endpoints. Some endpoints may not be called by the clientside. Sensitive endpoints have authentication/authorisation roles to prevent unauthorised access.
+![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/3cb2de2a-a72a-40f6-b9d0-81bc0e0241e2)
 
-<img src="https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/8ecb87fa-cdce-40a7-b697-b8f76bfd8982" height="400">
+### Backend Architecture
+I am using the classic MVC Architecture to write this API. The folder structure (in its current state) is as follows:
+
+<img src="https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/2f11dc4c-1d4c-4c4b-bdec-38ea0bc35f6a" height="400">
 
 ## Project Management
 I am trying out Asana to manage my workflow.
 
 ![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/92d2f8e6-8dfe-4012-ab76-c2f0a1d7bc49)
+
+Update 5/07/23: Using Asana for project management is proving to be a reasonably successful technique. 
+![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/07f2c3dd-3538-4dcf-9de0-724b681b7f2f)
+
+
+## Frontend Development
+
+The frontend is being written using React.js and MUI
+
+Initial project setup and sidebar creation has been completed. Routing to different pages has also been accomplished.
+![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/70bdec6a-4e7e-4b7e-852f-f2fa7605ac3a)
