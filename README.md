@@ -52,4 +52,5 @@ The frontend is being written using React.js and MUI
 Initial project setup and sidebar creation has been completed. Routing to different pages has also been accomplished.
 I have now created a NoteCard component which will dynamically display Note content. 
 
-![client](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/b73507d2-f74d-441e-ac8b-2febda5578b8)
+![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/fc93c5ce-cbaf-45c1-988c-5d95317702fd)
+
