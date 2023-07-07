@@ -1,8 +1,5 @@
 import React from "react";
 import { Container, Typography, Divider } from "@mui/material/";
-import Drawer from "./Components/Drawer";
-import NoteCard from "./Components/NoteCard";
-import NoteCardDark from "./Components/NoteCardDark";
 import ResponsiveGrid from "./Components/ResponsiveGrid";
 import Search from "./Components/Search";
 function Home(props) {
