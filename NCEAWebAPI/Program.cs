@@ -11,7 +11,11 @@ using NCEAWebRepo.Handler;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+//services cors
+builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+{
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -48,6 +52,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("corsapp");
 
 app.UseAuthentication();
 app.UseAuthorization();

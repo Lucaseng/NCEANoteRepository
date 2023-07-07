@@ -9,7 +9,7 @@ namespace NCEAWebRepo.Data.Notes
 
         //public IEnumerable<Note> SearchNotes(String keyword, int startIndex, int endIndex);
 
-        public IEnumerable<NoteOutputDto> SearchNotes(String keyword, int startIndex, int endIndex);
+        public IEnumerable<NoteOutputDto> SearchNotes(int endIndex, int startIndex, String keyword);
 
         public Note AddNote(NoteInputDto note);
 

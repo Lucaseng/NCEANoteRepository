@@ -20,12 +20,18 @@ namespace NCEAWebRepo.Data.Notes
             return notes;
         }
 
-        public IEnumerable<NoteOutputDto> SearchNotes(String keyword, int startIndex, int endIndex)
+        public IEnumerable<NoteOutputDto> SearchNotes(int endIndex, int startIndex, String keyword)
         {
+            IEnumerable<Note> notes = new List<Note>();
             //Fetch Notes from Database
-            IEnumerable<Note> notes = _dbContext.Note.Where(n => n.Standard.Title.ToLower().Contains(keyword.ToLower()) || n.Standard.Standard_ID.ToString().Contains(keyword))
-                .Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").
-                Skip(startIndex).Take(endIndex - startIndex + 1).ToList<Note>();
+            if (keyword == "") { notes = GetNotes(); }
+            else
+            {
+                notes = _dbContext.Note.Where(n => n.Standard.Title.ToLower().Contains(keyword.ToLower()) || n.Standard.Standard_ID.ToString().Contains(keyword))
+               .Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").
+               Skip(startIndex).Take(endIndex - startIndex + 1).ToList<Note>();
+            }
+
 
             //Initialise an array of NoteOutputDto objects
             List<NoteOutputDto> notesArr = new List<NoteOutputDto>();
