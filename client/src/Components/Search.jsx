@@ -11,9 +11,10 @@ import {
 
 import SearchIcon from "@mui/icons-material/Search";
 
-function Search() {
+function Search({ setSearchQuery }) {
   const [level, SetLevel] = React.useState("");
   const [assessment, SetAssessment] = React.useState("");
+  const [keyword, SetKeyword] = React.useState("");
 
   const handleChange = (event) => {
     SetLevel(event.target.value);
@@ -23,10 +24,17 @@ function Search() {
     SetAssessment(event.target.value);
   };
 
+  const handleInputChange = (event) => {
+    SetKeyword(event.target.value);
+    setSearchQuery(event.target.value);
+  };
+
   return (
     <>
       <Stack width="40vw">
         <TextField
+          value={keyword}
+          onChange={(e) => handleInputChange(e)}
           placeholder="Keywords"
           InputProps={{
             startAdornment: (

@@ -4,20 +4,27 @@ import Grid from "@mui/material/Unstable_Grid2";
 import NoteCardDark from "./NoteCardDark";
 import { Typography, CircularProgress, Stack } from "@mui/material";
 
-function ResponsiveGrid() {
+function ResponsiveGrid({ searchQuery }) {
   const [data, setData] = useState();
-  const [searchParams, setSearchParams] = useState("/daily");
+  //const [searchQuery, setSearchQuery] = useState("/daily");
 
   useEffect(() => {
     const fetchData = async () => {
-      fetch("https://localhost:8080/api/notes/search")
-        .then((response) => response.json())
-        .then((json) => setData(json))
-        .catch((error) => console.error(error));
+      if (searchQuery) {
+        fetch(`https://localhost:8080/api/notes/search?keyword=${searchQuery}`)
+          .then((response) => response.json())
+          .then((json) => setData(json))
+          .catch((error) => console.error(error));
+      } else {
+        fetch(`https://localhost:8080/api/notes/search`)
+          .then((response) => response.json())
+          .then((json) => setData(json))
+          .catch((error) => console.error(error));
+      }
     };
 
     fetchData();
-  }, [searchParams]);
+  }, [searchQuery]);
 
   if (!data) {
     return (
