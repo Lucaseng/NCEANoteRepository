@@ -20,22 +20,47 @@ namespace NCEAWebRepo.Data.Notes
             return notes;
         }
 
-        public IEnumerable<NoteOutputDto> SearchNotes(int endIndex, int startIndex, String keyword)
+        public IEnumerable<NoteOutputDto> SearchNotes(int endIndex, int startIndex, String keyword, String level, String assessment)
         {
-            IEnumerable<Note> notes = new List<Note>();
+
+            if (endIndex == 0)
+            {
+                endIndex = 99;
+            }
+
+
+
+            IEnumerable<Note> finalNotes = new List<Note>();
             //Fetch Notes from Database
-            if (keyword == "") { notes = GetNotes(); }
+            if (keyword == "" && level == "" && assessment == "")
+            {
+                finalNotes = GetNotes();
+            }
             else
             {
-                notes = _dbContext.Note.Where(n => n.Standard.Title.ToLower().Contains(keyword.ToLower()) || n.Standard.Standard_ID.ToString().Contains(keyword))
-               .Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").
-               Skip(startIndex).Take(endIndex - startIndex + 1).ToList<Note>();
+                var notes = _dbContext.Note.Where(n => n == n);
+                if (keyword != "")
+                {
+                    notes = notes.Where(n => n.Standard.Title.ToLower().Contains(keyword.ToLower()) || n.Standard.Standard_ID.ToString().Contains(keyword) || n.Standard.Subject.Subject_name.ToLower().Contains(keyword.ToLower()));
+                }
+                if (level != "")
+                {
+                    notes = notes.Where(n => n.Standard.Level.Contains(level));
+                }
+                if (assessment != "")
+                {
+                    notes = notes.Where(n => n.Standard.Assessment == assessment);
+                }
+
+
+                finalNotes = notes.Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").Skip(startIndex).Take(endIndex - startIndex + 1).ToList<Note>();
             }
+
 
 
             //Initialise an array of NoteOutputDto objects
             List<NoteOutputDto> notesArr = new List<NoteOutputDto>();
-            foreach (Note n in notes)
+            foreach (Note n in finalNotes)
             {
                 //Get the Kudos Count for each Note, n
                 int kudosCount = _dbContext.Kudos.Where(k => k.Note.Note_ID == n.Note_ID).Count();
