@@ -50,8 +50,10 @@ Update 5/07/23: Using Asana for project management is proving to be a reasonably
 The frontend is being written using React.js and MUI
 
 Initial project setup and sidebar creation has been completed. Routing to different pages has also been accomplished.
-I have now created a NoteCard component which will dynamically display Note content. 
+The project gallery has been setup with searching and filtering functionality complete.
+Next, pagination needs to be implemented. 
 
-![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/0fb6988e-6d43-42d0-8883-927901a4cbf2)
+![client](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/f9113e38-bb8b-4c19-bfc9-654491168190)
+
 
 
