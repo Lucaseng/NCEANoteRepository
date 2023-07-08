@@ -4,23 +4,32 @@ import Grid from "@mui/material/Unstable_Grid2";
 import NoteCardDark from "./NoteCardDark";
 import { Typography, CircularProgress, Stack } from "@mui/material";
 
-function ResponsiveGrid({ searchQuery }) {
+function ResponsiveGrid({
+  searchQuery,
+  setSearchQuery,
+  setLevel,
+  SetKeyword,
+  SetAssessment,
+}) {
   const [data, setData] = useState();
-  //const [searchQuery, setSearchQuery] = useState("/daily");
 
   useEffect(() => {
     const fetchData = async () => {
-      if (searchQuery) {
-        fetch(`https://localhost:8080/api/notes/search?keyword=${searchQuery}`)
-          .then((response) => response.json())
-          .then((json) => setData(json))
-          .catch((error) => console.error(error));
-      } else {
-        fetch(`https://localhost:8080/api/notes/search`)
-          .then((response) => response.json())
-          .then((json) => setData(json))
-          .catch((error) => console.error(error));
+      let url = "https://localhost:8080/api/notes/search?";
+      if (searchQuery[0] != "") {
+        url = url + `keyword=${searchQuery[0]}`;
       }
+      if (searchQuery[1] != "") {
+        url = url + `&level=${searchQuery[1]}`;
+      }
+      if (searchQuery[2] != "") {
+        url = url + `&assessment=${searchQuery[2]}`;
+      }
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((json) => setData(json))
+        .catch((error) => console.error(error));
     };
 
     fetchData();
@@ -49,7 +58,15 @@ function ResponsiveGrid({ searchQuery }) {
       >
         {data.map((i, index) => (
           <Grid xs={3.9} sm={3.9} md={3.9} key={index}>
-            <NoteCardDark key={i.note_ID} item={i} />
+            <NoteCardDark
+              key={i.note_ID}
+              setLevel={setLevel}
+              setKeyword={SetKeyword}
+              item={i}
+              setSearchQuery={setSearchQuery}
+              searchQuery={searchQuery}
+              setAssessment={SetAssessment}
+            />
           </Grid>
         ))}
       </Grid>

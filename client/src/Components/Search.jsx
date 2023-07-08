@@ -7,26 +7,49 @@ import {
   Select,
   MenuItem,
   Stack,
+  Typography,
+  Chip,
+  Button,
 } from "@mui/material";
 
 import SearchIcon from "@mui/icons-material/Search";
 
-function Search({ setSearchQuery }) {
-  const [level, SetLevel] = React.useState("");
-  const [assessment, SetAssessment] = React.useState("");
-  const [keyword, SetKeyword] = React.useState("");
-
+function Search({
+  setSearchQuery,
+  searchQuery,
+  level,
+  setLevel,
+  keyword,
+  SetKeyword,
+  assessment,
+  SetAssessment,
+}) {
   const handleChange = (event) => {
-    SetLevel(event.target.value);
+    setLevel(event.target.value);
+    let searchQuery2 = [...searchQuery];
+    searchQuery2[1] = event.target.value;
+    setSearchQuery(searchQuery2);
   };
 
   const handleAssessmentChange = (event) => {
     SetAssessment(event.target.value);
+    let searchQuery2 = [...searchQuery];
+    searchQuery2[2] = event.target.value;
+    setSearchQuery(searchQuery2);
   };
 
   const handleInputChange = (event) => {
     SetKeyword(event.target.value);
-    setSearchQuery(event.target.value);
+    let searchQuery2 = [...searchQuery];
+    searchQuery2[0] = event.target.value;
+    setSearchQuery(searchQuery2);
+  };
+
+  const handleReset = (event) => {
+    SetKeyword("");
+    SetAssessment();
+    setLevel();
+    setSearchQuery(["", "", ""]);
   };
 
   return (
@@ -66,7 +89,7 @@ function Search({ setSearchQuery }) {
               <MenuItem value={"Scholarship"}>Scholarship</MenuItem>
             </Select>
           </FormControl>
-          <FormControl sx={{ mt: 1.2, minWidth: "20%" }} size="small">
+          <FormControl sx={{ mt: 1.2, mr: 1.2, minWidth: "20%" }} size="small">
             <InputLabel id="ass-label">Assessment</InputLabel>
             <Select
               labelId="ass-label"
@@ -81,6 +104,15 @@ function Search({ setSearchQuery }) {
               <MenuItem value={"Internal"}>Internal</MenuItem>
               <MenuItem value={"External"}>External</MenuItem>
             </Select>
+          </FormControl>
+          <FormControl sx={{ mt: 1.2 }}>
+            <Button
+              onClick={handleReset}
+              sx={{ borderRadius: "40px", pt: 1.2 }}
+              variant="outlined"
+            >
+              Reset
+            </Button>
           </FormControl>
         </Stack>
       </Stack>

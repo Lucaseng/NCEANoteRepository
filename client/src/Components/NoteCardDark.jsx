@@ -15,7 +15,55 @@ import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 function NoteCardDark(props) {
-  const { item } = props;
+  const {
+    item,
+    setSearchQuery,
+    searchQuery,
+    setLevel,
+    setKeyword,
+    setAssessment,
+  } = props;
+
+  const handleLevelClick = (event) => {
+    const level = event.target.innerText;
+    let myArr = [...searchQuery];
+    if (level.length > 7) {
+      myArr[1] = "Scholarship";
+    } else {
+      myArr[1] = level[level.length - 1];
+    }
+    setLevel(myArr[1]);
+    setSearchQuery(myArr);
+  };
+
+  const handleSubjectClick = (event) => {
+    const subject = event.target.innerText;
+    let myArr = [...searchQuery];
+    myArr[0] = subject;
+    setKeyword(subject);
+    setSearchQuery(myArr);
+  };
+
+  const handleStandardClick = (event) => {
+    let standard = event.target.innerText;
+    let myArr = [...searchQuery];
+    myArr[0] = standard.substring(2);
+    setKeyword(myArr[0]);
+    setSearchQuery(myArr);
+  };
+
+  const handleAssClick = (event) => {
+    let subject = event.target.innerText;
+    let myArr = [...searchQuery];
+    if (subject == "Ext") {
+      subject = "External";
+    } else {
+      subject = "Internal";
+    }
+    myArr[2] = subject;
+    setAssessment(subject);
+    setSearchQuery(myArr);
+  };
 
   return (
     <>
@@ -45,6 +93,8 @@ function NoteCardDark(props) {
             >
               <Stack direction="row" spacing={1}>
                 <Chip
+                  key={item.standard.level}
+                  onClick={(e) => handleLevelClick(e)}
                   sx={{
                     color: "#fff",
                     borderColor: "#fff",
@@ -52,7 +102,6 @@ function NoteCardDark(props) {
                       backgroundColor: "rgba(255, 255, 255, 0.1) !important",
                     },
                   }}
-                  onClick={() => {}}
                   label={`Level ${item.standard.level}`}
                   variant="outlined"
                 />
@@ -64,7 +113,7 @@ function NoteCardDark(props) {
                       backgroundColor: "rgba(255, 255, 255, 0.1) !important",
                     },
                   }}
-                  onClick={() => {}}
+                  onClick={(e) => handleSubjectClick(e)}
                   label={item.standard.subject.subject_name}
                   variant="outlined"
                 />
@@ -76,7 +125,7 @@ function NoteCardDark(props) {
                       backgroundColor: "rgba(255, 255, 255, 0.1) !important",
                     },
                   }}
-                  onClick={() => {}}
+                  onClick={(e) => handleStandardClick(e)}
                   label={`AS${item.standard.standard_ID}`}
                   variant="outlined"
                 />
@@ -84,9 +133,13 @@ function NoteCardDark(props) {
 
               <Stack direction="row" spacing={1}>
                 <Chip
+                  onClick={(e) => handleAssClick(e)}
                   sx={{
                     color: "#fff",
                     borderColor: "#fff",
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 255, 255, 0.1) !important",
+                    },
                   }}
                   label={item.standard.assessment.substring(0, 3)}
                   variant="outlined"
