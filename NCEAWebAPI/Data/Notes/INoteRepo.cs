@@ -1,5 +1,6 @@
 ﻿using NCEAWebRepo.Dtos;
 using NCEAWebRepo.Models;
+using System.Collections;
 
 namespace NCEAWebRepo.Data.Notes
 {
@@ -7,7 +8,7 @@ namespace NCEAWebRepo.Data.Notes
     {
         public IEnumerable<Note> GetNotes();
 
-        public IEnumerable<NoteOutputDto> SearchNotes(int endIndex, int startIndex, String keyword, String level, String assessment);
+        public ArrayList SearchNotes(int endIndex, int startIndex, String keyword, String level, String assessment);
 
         public Note AddNote(NoteInputDto note);
 

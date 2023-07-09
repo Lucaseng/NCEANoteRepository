@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NCEAWebRepo.Dtos;
 using NCEAWebRepo.Models;
+using System.Collections;
 
 namespace NCEAWebRepo.Data.Notes
 {
@@ -20,7 +21,7 @@ namespace NCEAWebRepo.Data.Notes
             return notes;
         }
 
-        public IEnumerable<NoteOutputDto> SearchNotes(int endIndex, int startIndex, String keyword, String level, String assessment)
+        public ArrayList SearchNotes(int endIndex, int startIndex, String keyword, String level, String assessment)
         {
 
             if (endIndex == 0)
@@ -53,8 +54,10 @@ namespace NCEAWebRepo.Data.Notes
                 }
 
 
-                finalNotes = notes.Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").Skip(startIndex).Take(endIndex - startIndex + 1).ToList<Note>();
+                finalNotes = notes.Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").ToList<Note>();
             }
+
+            int myInitialQueryLength = finalNotes.Count();
 
 
 
@@ -84,7 +87,15 @@ namespace NCEAWebRepo.Data.Notes
                 });
             }
 
-            return notesArr.OrderByDescending(n => n.Kudos);
+            IEnumerable<NoteOutputDto> myNotes = notesArr.OrderByDescending(n => n.Kudos);
+            myNotes = myNotes.Skip(startIndex).Take(endIndex - startIndex + 1);
+            ArrayList myArrayList = new ArrayList
+            {
+                myInitialQueryLength,
+                myNotes
+            };
+            return myArrayList;
+
         }
 
         public Note GetNoteByID(int id)
