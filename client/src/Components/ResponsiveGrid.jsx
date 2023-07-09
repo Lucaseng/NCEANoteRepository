@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import NoteCardDark from "./NoteCardDark";
-import { Typography, CircularProgress, Stack } from "@mui/material";
+import { Typography, CircularProgress, Stack, Pagination } from "@mui/material";
 
 function ResponsiveGrid({
   searchQuery,
@@ -10,8 +10,15 @@ function ResponsiveGrid({
   setLevel,
   SetKeyword,
   SetAssessment,
+  page,
+  setPage,
 }) {
   const [data, setData] = useState();
+  const [totalPageNumber, setTotalPageNumber] = useState(1);
+
+  const handlePagination = (event, value) => {
+    setPage(value);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,15 +32,19 @@ function ResponsiveGrid({
       if (searchQuery[2] != "") {
         url = url + `&assessment=${searchQuery[2]}`;
       }
+      url = url + `&startIndex=${6 * [page - 1]}&endIndex=${6 * page - 1}`;
 
       fetch(url)
         .then((response) => response.json())
-        .then((json) => setData(json))
+        .then((json) => {
+          setTotalPageNumber(json[0]);
+          setData(json[1]);
+        })
         .catch((error) => console.error(error));
     };
 
     fetchData();
-  }, [searchQuery]);
+  }, [searchQuery, page]);
 
   if (!data) {
     return (
@@ -70,6 +81,21 @@ function ResponsiveGrid({
           </Grid>
         ))}
       </Grid>
+      <Pagination
+        count={Math.ceil(totalPageNumber / 6)}
+        size="large"
+        color="primary"
+        showFirstButton
+        showLastButton
+        page={page}
+        onChange={handlePagination}
+        sx={{
+          mt: 5,
+          position: "fixed",
+          bottom: "3vh",
+          left: "50%",
+        }}
+      />
     </Box>
   );
 }

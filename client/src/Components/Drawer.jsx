@@ -9,6 +9,7 @@ import {
   Typography,
   Box,
   Divider,
+  Stack,
 } from "@mui/material/";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
@@ -59,17 +60,30 @@ function Drawer(props) {
       className={"drawer"}
     >
       <>
-        <Box
+        <Stack
           sx={{
-            typography: "h4",
-            fontSize: "1.1em",
-            textAlign: "center",
-            fontWeight: "light",
-            m: 2,
+            p: 2,
+            justifyContent: "center",
+            alignItems: "center",
           }}
+          direction="row"
         >
-          NCEA Note Repository
-        </Box>
+          {" "}
+          <img height="30em" src="../../public/books.svg" />
+          <Box
+            sx={{
+              typography: "h4",
+              fontSize: "1.1em",
+              textAlign: "center",
+              fontWeight: "light",
+              m: 2,
+              fontWeight: "medium",
+            }}
+          >
+            NCEA Note Repository
+          </Box>
+        </Stack>
+
         <Divider></Divider>
         <List>
           {itemsList.map((item, index) => (

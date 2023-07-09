@@ -23,12 +23,15 @@ function Search({
   SetKeyword,
   assessment,
   SetAssessment,
+  page,
+  setPage,
 }) {
   const handleChange = (event) => {
     setLevel(event.target.value);
     let searchQuery2 = [...searchQuery];
     searchQuery2[1] = event.target.value;
     setSearchQuery(searchQuery2);
+    setPage(1);
   };
 
   const handleAssessmentChange = (event) => {
@@ -36,6 +39,7 @@ function Search({
     let searchQuery2 = [...searchQuery];
     searchQuery2[2] = event.target.value;
     setSearchQuery(searchQuery2);
+    setPage(1);
   };
 
   const handleInputChange = (event) => {
@@ -43,13 +47,15 @@ function Search({
     let searchQuery2 = [...searchQuery];
     searchQuery2[0] = event.target.value;
     setSearchQuery(searchQuery2);
+    setPage(1);
   };
 
   const handleReset = (event) => {
     SetKeyword("");
-    SetAssessment();
-    setLevel();
+    SetAssessment("");
+    setLevel("");
     setSearchQuery(["", "", ""]);
+    setPage(1);
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Typography, Divider } from "@mui/material/";
+import { Container, Typography, Divider, Pagination } from "@mui/material/";
 import ResponsiveGrid from "./Components/ResponsiveGrid";
 import Search from "./Components/Search";
 function Home(props) {
@@ -7,6 +7,7 @@ function Home(props) {
   const [level, setLevel] = useState("");
   const [keyword, SetKeyword] = React.useState("");
   const [assessment, SetAssessment] = React.useState("");
+  const [page, setPage] = useState(1);
   return (
     <>
       <Container maxWidth="xl" sx={{ mt: 3 }}>
@@ -22,6 +23,8 @@ function Home(props) {
           searchQuery={searchQuery}
           assessment={assessment}
           SetAssessment={SetAssessment}
+          page={page}
+          setPage={setPage}
         />
         <Divider sx={{ mb: 5 }} />
         <ResponsiveGrid
@@ -30,6 +33,8 @@ function Home(props) {
           setSearchQuery={setSearchQuery}
           searchQuery={searchQuery}
           SetAssessment={SetAssessment}
+          page={page}
+          setPage={setPage}
         />
       </Container>
     </>
