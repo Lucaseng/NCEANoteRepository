@@ -1,5 +1,8 @@
 # NCEA Note Repository
-NCEA Note Repository is a web application allowing high-school students to collate and share their NCEA notes
+NCEA Note Repository is a web application allowing high-school students to collate and share their NCEA notes.
+
+![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/4d1f8bbf-41c5-49ab-ad58-e702ceea3ef4)
+
 
 ## Database Development
 ### Web-Scraping
@@ -47,13 +50,14 @@ Update 5/07/23: Using Asana for project management is proving to be a reasonably
 
 ## Frontend Development
 
-The frontend is being written using React.js and MUI
+The frontend is being written using React.js and MUI.
+
+Technology:
+- React.js v18.2.0
+- MUI v5.13.7
+- JavaScript (ES6+)
 
 Initial project setup and sidebar creation has been completed. Routing to different pages has also been accomplished.
 The project gallery has been setup with searching and filtering functionality complete.
-Next, pagination needs to be implemented. 
-
-![client](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/f9113e38-bb8b-4c19-bfc9-654491168190)
-
-
-
+Pagination has now been implemented.
+My next step will be to implement logging in and signing up, such that additional functionality can then be implemented. 
