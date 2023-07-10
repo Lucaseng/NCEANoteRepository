@@ -17,6 +17,7 @@ namespace NCEAWebRepo.Controllers
             _repository = repository;
         }
 
+        [AllowAnonymous]
         [HttpGet()]
         public ActionResult<IEnumerable<Standard>> AllStandards()
         {
@@ -24,6 +25,7 @@ namespace NCEAWebRepo.Controllers
             return Ok(standards);
         }
 
+        [AllowAnonymous]
         [HttpGet("id")]
         public ActionResult<Standard> GetStandardById(int Standard_ID)
         {
@@ -39,8 +41,8 @@ namespace NCEAWebRepo.Controllers
 
         }
 
-        [Authorize(AuthenticationSchemes = "AdminAuthentication")]
-        [Authorize(Policy = "AdminOnly")]
+
+        [Authorize(Roles = "Admin")]
         [HttpPost()]
         public ActionResult<String> AddStandard(StandardInputDto standard)
         {

@@ -17,6 +17,7 @@ namespace NCEAWebRepo.Controllers
             _repository = repository;
         }
 
+        [AllowAnonymous]
         [HttpGet()]
         public ActionResult<IEnumerable<Note>> AllNotes()
         {
@@ -24,6 +25,7 @@ namespace NCEAWebRepo.Controllers
             return Ok(notes);
         }
 
+        [AllowAnonymous]
         [HttpGet("search")]
         public ActionResult<ArrayList> Search(int endIndex, int startIndex = 0, String? keyword = "", String? level = "", String? assessment = "")
         {
@@ -31,6 +33,7 @@ namespace NCEAWebRepo.Controllers
             return Ok(notes);
         }
 
+        [AllowAnonymous]
         [HttpGet("id")]
         public ActionResult<Note> GetNotebyId(int id)
         {
@@ -49,6 +52,7 @@ namespace NCEAWebRepo.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpGet("standard")]
         public ActionResult<IEnumerable<Note>> GetNotesByStandard(int Standard_ID)
         {
@@ -56,8 +60,7 @@ namespace NCEAWebRepo.Controllers
             return Ok(notes);
         }
 
-        [Authorize(AuthenticationSchemes = "UserAuth")]
-        [Authorize(Policy = "UserOnly")]
+        [Authorize(Roles = "User, Admin")]
         [HttpPost()]
         public ActionResult<String> AddNote(NoteInputDto note)
         {

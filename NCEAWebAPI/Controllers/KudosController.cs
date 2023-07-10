@@ -16,6 +16,7 @@ namespace NCEAWebRepo.Controllers
             _repository = repository;
         }
 
+        [AllowAnonymous]
         [HttpGet()]
         public ActionResult<IEnumerable<KudosOutputDto>> AllKudos()
         {
@@ -23,6 +24,7 @@ namespace NCEAWebRepo.Controllers
             return Ok(kudos);
         }
 
+        [AllowAnonymous]
         [HttpGet("count")]
         public ActionResult<int> GetKudosCount(int Note_ID)
         {
@@ -30,8 +32,7 @@ namespace NCEAWebRepo.Controllers
             return Ok(myCount);
         }
 
-        [Authorize(AuthenticationSchemes = "UserAuth")]
-        [Authorize(Policy = "UserOnly")]
+        [Authorize(Roles = "User, Admin")]
         [HttpPost()]
         public ActionResult<String> GiveKudos(KudosInputDto kudos)
         {

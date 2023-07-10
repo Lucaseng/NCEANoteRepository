@@ -17,6 +17,7 @@ namespace NCEAWebRepo.Controllers
             _repository = repository;
         }
 
+        [AllowAnonymous]
         [HttpGet()]
         public ActionResult<IEnumerable<Subject>> AllSubjects()
         {
@@ -24,8 +25,8 @@ namespace NCEAWebRepo.Controllers
             return Ok(subjects);
         }
 
-        [Authorize(AuthenticationSchemes = "AdminAuthentication")]
-        [Authorize(Policy = "AdminOnly")]
+
+        [Authorize(Roles = "Admin")]
         [HttpPost()]
         public ActionResult<String> AddSubject(Subject subject)
         {

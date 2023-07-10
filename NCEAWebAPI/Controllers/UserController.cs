@@ -12,12 +12,15 @@ namespace NCEAWebRepo.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepo _repository;
+        private readonly IConfiguration _config;
 
-        public UserController(IUserRepo repository)
+        public UserController(IUserRepo repository, IConfiguration config)
         {
             _repository = repository;
+            _config = config;
         }
 
+        [AllowAnonymous]
         [HttpGet()]
         public ActionResult<IEnumerable<UserOutputDto>> AllUsers()
         {
@@ -25,17 +28,16 @@ namespace NCEAWebRepo.Controllers
             return Ok(users);
         }
 
-        [Authorize(AuthenticationSchemes = "UserAuth")]
-        [Authorize(Policy = "UserOnly")]
+        [Authorize(Roles = "User, Admin")]
         [HttpPatch("password")]
         public ActionResult<String> ChangePass(String newPass)
         {
-            var claim = HttpContext.User.Claims.First(c => c.Type == "email");
-            var emailAddress = claim.Value;
+            string emailAddress = User.FindFirst("email").Value;
             _repository.ChangePass(emailAddress, newPass);
             return Ok("Password Succesfully Changed.");
         }
 
+        [AllowAnonymous]
         [HttpGet("id")]
         public ActionResult<UserOutputDto> GetUserById(int User_ID)
         {
@@ -54,18 +56,18 @@ namespace NCEAWebRepo.Controllers
 
         }
 
-        [Authorize(AuthenticationSchemes = "UserAuth")]
-        [Authorize(Policy = "UserOnly")]
+
+        [Authorize(Roles = "User, Admin")]
         [HttpPost("me")]
         public ActionResult<UserOutputDto> Auth()
         {
-            var claim = HttpContext.User.Claims.First(c => c.Type == "email");
-            var emailAddress = claim.Value;
-            return Ok(_repository.GetUserByEmail(emailAddress));
+            string email = User.FindFirst("email").Value;
+            UserOutputDto u = _repository.GetUserByEmail(email);
+            return Ok(u);
 
         }
 
-
+        [AllowAnonymous]
         [HttpPost()]
         public ActionResult<String> AddUser(User user)
         {

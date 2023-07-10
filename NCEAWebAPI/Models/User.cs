@@ -1,9 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace NCEAWebRepo.Models
+
 {
     public class User
     {
+
         [Key]
         public int User_ID { get; set; }
         public string First_Name { get; set; }
@@ -15,5 +17,9 @@ namespace NCEAWebRepo.Models
         public string School { get; set; }
 
         public string User_Type { get; set; }
+
     }
+
+
+
 }

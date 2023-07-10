@@ -1,4 +1,5 @@
-﻿using NCEAWebRepo.Models;
+﻿using NCEAWebRepo.Dtos;
+using NCEAWebRepo.Models;
 
 namespace NCEAWebRepo.Data.Auth
 {
@@ -9,6 +10,19 @@ namespace NCEAWebRepo.Data.Auth
         public AuthRepo(NCEAWebRepoDBContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public User Login(LoginInput cred)
+        {
+            User c = _dbContext.User.FirstOrDefault(u => u.Email == cred.email);
+            if (c != null)
+            {
+                if (BCrypt.Net.BCrypt.Verify(cred.password, c.Password))
+                {
+                    return c;
+                }
+            }
+            return null;
         }
 
         public bool ValidLogin(string email, string password)
