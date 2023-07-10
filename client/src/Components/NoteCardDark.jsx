@@ -22,6 +22,7 @@ function NoteCardDark(props) {
     setLevel,
     setKeyword,
     setAssessment,
+    setPage,
   } = props;
 
   const handleLevelClick = (event) => {
@@ -34,6 +35,7 @@ function NoteCardDark(props) {
     }
     setLevel(myArr[1]);
     setSearchQuery(myArr);
+    setPage(1);
   };
 
   const handleSubjectClick = (event) => {
@@ -42,6 +44,7 @@ function NoteCardDark(props) {
     myArr[0] = subject;
     setKeyword(subject);
     setSearchQuery(myArr);
+    setPage(1);
   };
 
   const handleStandardClick = (event) => {
@@ -50,6 +53,7 @@ function NoteCardDark(props) {
     myArr[0] = standard.substring(2);
     setKeyword(myArr[0]);
     setSearchQuery(myArr);
+    setPage(1);
   };
 
   const handleAssClick = (event) => {
@@ -63,6 +67,7 @@ function NoteCardDark(props) {
     myArr[2] = subject;
     setAssessment(subject);
     setSearchQuery(myArr);
+    setPage(1);
   };
 
   return (

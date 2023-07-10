@@ -77,6 +77,7 @@ function ResponsiveGrid({
               setSearchQuery={setSearchQuery}
               searchQuery={searchQuery}
               setAssessment={SetAssessment}
+              setPage={setPage}
             />
           </Grid>
         ))}
