@@ -51,6 +51,12 @@ namespace NCEAWebRepo.Data.Standards
             return myStandard;
         }
 
+        public IEnumerable<Standard> GetStandardsBySearch(string subject, string level)
+        {
+            IEnumerable<Standard> standards = _dbContext.Standard.Where(s => s.Subject.Subject_name == subject && s.Level == level).Include("Subject").ToList<Standard>();
+            return standards;
+        }
+
 
     }
 }

@@ -26,6 +26,15 @@ namespace NCEAWebRepo.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("search")]
+        public ActionResult<IEnumerable<Standard>> GetStandardsBySearch(string subject, string level)
+        {
+            IEnumerable<Standard> standards = _repository.GetStandardsBySearch(subject, level);
+            return Ok(standards);
+
+        }
+
+        [AllowAnonymous]
         [HttpGet("id")]
         public ActionResult<Standard> GetStandardById(int Standard_ID)
         {

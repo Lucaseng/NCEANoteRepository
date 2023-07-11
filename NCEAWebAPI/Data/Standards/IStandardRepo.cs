@@ -7,6 +7,8 @@ namespace NCEAWebRepo.Data.Standards
     {
         IEnumerable<Standard> GetStandards();
 
+        public IEnumerable<Standard> GetStandardsBySearch(string subject, string level);
+
         public Standard GetStandardById(int id);
         public bool StandardExists(StandardInputDto standard);
         public Standard AddStandard(StandardInputDto standard);
