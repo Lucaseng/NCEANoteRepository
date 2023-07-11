@@ -10,6 +10,8 @@ using System.Text;
 
 namespace NCEAWebRepo.Controllers
 {
+    [Route("api/auth")]
+    [ApiController]
     public class AuthController : Controller
     {
 
@@ -23,14 +25,17 @@ namespace NCEAWebRepo.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("auth")]
+        [HttpPost()]
 
         public ActionResult Login([FromBody] LoginInput cred)
         {
             User user = _repository.Login(cred);
             if (user == null)
             {
-                return Unauthorized("Invalid email or password provided!");
+                return Unauthorized(new FailDto
+                {
+                    fail = "Invalid email or password provided!"
+                });
             }
             var issuer = _config["Jwt:Issuer"];
             var audience = _config["Jwt:Audience"];
@@ -58,7 +63,10 @@ namespace NCEAWebRepo.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var jwtToken = tokenHandler.WriteToken(token);
             var stringToken = tokenHandler.WriteToken(token);
-            return Ok(stringToken);
+            return Ok(new TokenOutput
+            {
+                token = stringToken
+            });
 
 
         }
