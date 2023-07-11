@@ -10,8 +10,9 @@ import {
   Box,
   Divider,
   Stack,
-  Link,
   Alert,
+  Container,
+  Button,
 } from "@mui/material/";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
@@ -27,13 +28,14 @@ function Drawer({ user, setUser, setMessage, handleClose, setOpen }) {
   const handleSignOut = (e) => {
     localStorage.clear();
     setUser();
-    navigate("/");
+
     setMessage(
       <Alert severity="success" onClose={handleClose}>
         Signed out succesfully - See you later!
       </Alert>
     );
     setOpen(true);
+    navigate("/");
   };
 
   const itemsList = [
@@ -117,18 +119,31 @@ function Drawer({ user, setUser, setMessage, handleClose, setOpen }) {
         <Divider></Divider>
         {user ? (
           <>
-            <Divider></Divider>
-            <Box sx={{ mt: "auto", pb: 2, pl: 3, pr: 4 }}>
-              <Typography sx={{ fontWeight: "bold" }}>
-                {user.first_Name + " " + user.last_Name}
-              </Typography>
-              <Stack sx={{ justifyContent: "space-between" }} direction="row">
-                {" "}
-                <Typography>{user.email}</Typography>
-                <Link onClick={handleSignOut} color="#fff" href="#">
-                  Sign Out
-                </Link>
-              </Stack>
+            <Box sx={{ mt: "auto", pb: 3 }}>
+              <Divider sx={{ mb: 2 }}></Divider>
+              <Container sx={{}}>
+                <Typography sx={{ fontWeight: "bold" }}>
+                  {user.first_Name + " " + user.last_Name}
+                </Typography>
+                <Stack sx={{}} direction={"column"}>
+                  <Typography sx={{ wordBreak: "break-word" }}>
+                    {user.email}
+                  </Typography>
+
+                  <Button
+                    sx={{
+                      mt: 2,
+                      padding: 0.2,
+                      "&:hover": { backgroundColor: "rgba(255,255,255,0.05)" },
+                    }}
+                    variant="outlined"
+                    color="inherit"
+                    onClick={handleSignOut}
+                  >
+                    Sign Out
+                  </Button>
+                </Stack>
+              </Container>
             </Box>
           </>
         ) : (
