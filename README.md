@@ -1,7 +1,10 @@
 # NCEA Note Repository
 NCEA Note Repository is a web application allowing high-school students to collate and share their NCEA notes.
 
-![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/4d1f8bbf-41c5-49ab-ad58-e702ceea3ef4)
+![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/55993516-6b67-493f-abe5-7e66d3737a34)
+![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/00ee841d-79e4-417e-b81d-72485b56afb0)
+![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/9a6be1fc-8ee3-437b-bdfb-8201ff4324f5)
+![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/48f78639-dd3c-46a5-8ccc-c6788984328d)
 
 
 ## Database Development
