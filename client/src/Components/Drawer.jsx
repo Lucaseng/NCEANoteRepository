@@ -10,6 +10,8 @@ import {
   Box,
   Divider,
   Stack,
+  Link,
+  Alert,
 } from "@mui/material/";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
@@ -18,9 +20,22 @@ import UploadIcon from "@mui/icons-material/Upload";
 import LoginIcon from "@mui/icons-material/Login";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 
-function Drawer(props) {
+function Drawer({ user, setUser, setMessage, handleClose, setOpen }) {
   const theme = useTheme();
   const navigate = useNavigate();
+
+  const handleSignOut = (e) => {
+    localStorage.clear();
+    setUser();
+    navigate("/");
+    setMessage(
+      <Alert severity="success" onClose={handleClose}>
+        Signed out succesfully - See you later!
+      </Alert>
+    );
+    setOpen(true);
+  };
+
   const itemsList = [
     {
       text: "Home",
@@ -100,21 +115,39 @@ function Drawer(props) {
           ))}
         </List>
         <Divider></Divider>
-        <List sx={{ mt: "auto" }}>
-          <Divider></Divider>
-          {loginList.map((item, index) => (
-            <ListItem
-              sx={{ "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" } }}
-              key={item.text}
-              disablePadding
-            >
-              <ListItemButton onClick={item.onClick}>
-                {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
-                <ListItemText primary={item.text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        {user ? (
+          <>
+            <Divider></Divider>
+            <Box sx={{ mt: "auto", pb: 2, pl: 3, pr: 4 }}>
+              <Typography sx={{ fontWeight: "bold" }}>
+                {user.first_Name + " " + user.last_Name}
+              </Typography>
+              <Stack sx={{ justifyContent: "space-between" }} direction="row">
+                {" "}
+                <Typography>{user.email}</Typography>
+                <Link onClick={handleSignOut} color="#fff" href="#">
+                  Sign Out
+                </Link>
+              </Stack>
+            </Box>
+          </>
+        ) : (
+          <List sx={{ mt: "auto" }}>
+            <Divider></Divider>
+            {loginList.map((item, index) => (
+              <ListItem
+                sx={{ "&:hover": { backgroundColor: "rgba(0,0,0,0.1)" } }}
+                key={item.text}
+                disablePadding
+              >
+                <ListItemButton onClick={item.onClick}>
+                  {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
+                  <ListItemText primary={item.text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        )}
       </>
     </MUIDrawer>
   );
