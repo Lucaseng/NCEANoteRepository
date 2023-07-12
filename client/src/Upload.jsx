@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   TextField,
@@ -10,46 +10,52 @@ import {
   Autocomplete,
   Divider,
 } from "@mui/material/";
+import NoteCardDark from "./Components/NoteCardDark";
+import { fetchCurrentUser } from "./auth/authHandler";
+import jwt_decode from "jwt-decode";
 
-function Upload() {
+let myUser = jwt_decode(localStorage.getItem("token"));
+
+export default function Upload({ user, setUser }) {
+  const [levels, setLevels] = useState(["1", "2", "3", "Scholarship"]);
   const [subjects, setSubjects] = useState([]);
   const [standards, setStandards] = useState([]);
   const [levelDisabled, setLevelDisabled] = useState(true);
   const [standardDisabled, setStandardDisabled] = useState(true);
-  const [subject, setSubject] = useState();
-  const [standard, setStandard] = useState();
-  const [level, setLevel] = useState(false);
+  const [value, setValue] = React.useState(null);
+  const [levelValue, setLevelValue] = React.useState(null);
+  const [standardValue, setStandardValue] = React.useState(null);
+  const [sampleNote, setSampleNote] = useState({
+    file: "",
+    file_Name: "",
+    kudos: 0,
+    standard: {
+      standard_ID: "",
+      title: "",
+      credits: "",
+      assessment: "",
+      level: "",
+      subject: {
+        subject_name: "",
+      },
+    },
+    user: {
+      first_Name: myUser.First_Name,
+      last_Name: myUser.Last_Name,
+      email: myUser.Email,
+    },
+  });
 
-  const handleSubjectChange = (e) => {
-    if (e.target.innerText) {
-      setLevelDisabled(false);
-      setSubject(e.target.innerText);
-    } else {
-      setStandard();
-      setLevelDisabled(true);
-      setStandardDisabled(true);
-    }
-  };
-
-  const handleLevelChange = (e) => {
-    const myNumber = e.target.innerText;
-    if (e.target.textContent) {
-      setStandardDisabled(false);
-      let url = `https://localhost:8080/api/standards/search?subject=${subject}&level=${myNumber}`;
-      fetchStandards(url);
-    } else {
-      setStandard();
-      setStandardDisabled(true);
-    }
-  };
-
-  const handleStandardChange = (e) => {
-    if (e.target.innerText) {
-      setStandard(e.target.innerText);
-    } else {
-      setStandard();
-    }
-  };
+  useEffect(() => {
+    let mySamp = sampleNote;
+    let jwt = jwt_decode(localStorage.getItem("token"));
+    mySamp.user = {
+      first_Name: jwt.First_Name,
+      last_Name: jwt.Last_Name,
+      email: jwt.Email,
+    };
+    setSampleNote(mySamp);
+  });
 
   const fetchSubjects = async () => {
     let url = "https://localhost:8080/api/subjects";
@@ -70,6 +76,8 @@ function Upload() {
       .catch((error) => console.error(error));
   };
 
+  fetchSubjects();
+
   const fetchStandards = async (url) => {
     fetch(url)
       .then((response) => response.json())
@@ -80,15 +88,32 @@ function Upload() {
           let standardArr = [];
 
           json.forEach((obj) => {
-            standardArr.push(obj["title"] + ` (AS${obj["standard_ID"]})`);
+            standardArr.push({
+              title: obj["title"] + ` (AS${obj["standard_ID"]})`,
+              standard_ID: obj["standard_ID"],
+            });
           });
+
           setStandards(standardArr);
         }
       })
       .catch((error) => console.error(error));
   };
 
-  fetchSubjects();
+  const fetchStandardInfo = async (url) => {
+    fetch(url)
+      .then((response) => response.json())
+      .then((json) => {
+        if (json.fail) {
+          alert(json.fail);
+        } else {
+          let mySamp = sampleNote;
+          mySamp.standard = json;
+          setSampleNote(mySamp);
+        }
+      })
+      .catch((error) => console.error(error));
+  };
 
   return (
     <Container
@@ -107,11 +132,48 @@ function Upload() {
           justifyContent: "center",
         }}
       >
-        <Box component="form" onSubmit={() => {}} noValidate sx={{ mt: 1 }}>
+        {" "}
+        <Box
+          width="50vw"
+          component="form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            alert(e.target.subject.value);
+            alert(e.target.level.value);
+            const index = e.target.standard.value.lastIndexOf("(");
+            const standard_id = e.target.standard.value.substring(
+              index + 1,
+              e.target.standard.value.length - 1
+            );
+            alert(standard_id);
+          }}
+          noValidate
+          sx={{ mt: 1 }}
+        >
           <Autocomplete
-            disablePortal
-            name="subject"
-            onInputChange={handleSubjectChange}
+            id="subject"
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+              setLevelValue(null);
+              setStandardValue(null);
+
+              if (newValue) {
+                setLevelDisabled(false);
+              } else {
+                setLevelDisabled(true);
+                setStandardDisabled(true);
+              }
+              let mySamp = sampleNote;
+              mySamp.standard.subject.subject_name = newValue;
+              mySamp.standard.level = "";
+              mySamp.standard.standard_ID = "";
+              mySamp.standard.title = "";
+              mySamp.standard.credits = "";
+              mySamp.standard.assessment = "";
+
+              setSampleNote(mySamp);
+            }}
             options={subjects}
             sx={{ width: "50vw", mb: 3 }}
             renderInput={(params) => (
@@ -119,43 +181,106 @@ function Upload() {
             )}
           />
           <Autocomplete
-            disablePortal
+            id="level"
             disabled={levelDisabled}
-            name="level"
-            onInputChange={handleLevelChange}
-            options={["1", "2", "3", "Scholarship"]}
+            value={levelValue}
+            onChange={(event, newValue) => {
+              setLevelValue(newValue);
+              setStandardValue(null);
+
+              fetchStandards(
+                `https://localhost:8080/api/standards/search?subject=${value}&level=${newValue}`
+              );
+
+              let mySamp = sampleNote;
+
+              if (newValue) {
+                setStandardDisabled(false);
+                mySamp.standard.level = newValue;
+              } else {
+                setStandardDisabled(true);
+                mySamp.standard.level = "";
+                mySamp.standard.standard_ID = "";
+                mySamp.standard.title = "";
+                mySamp.standard.credits = "";
+                mySamp.standard.assessment = "";
+              }
+
+              setSampleNote(mySamp);
+            }}
             sx={{ width: "50vw", mb: 3 }}
+            options={levels}
             renderInput={(params) => (
               <TextField {...params} label="Enter a Level:" />
             )}
           />
           <Autocomplete
-            disablePortal
-            onInputChange={handleStandardChange}
+            id="standard"
             disabled={standardDisabled}
-            name="standard"
-            options={standards}
-            sx={{ width: "50vw", mb: 2 }}
+            value={standardValue}
+            onChange={(event, newValue) => {
+              setStandardValue(newValue);
+              let mySamp = sampleNote;
+              if (newValue != null) {
+                const index = newValue.lastIndexOf("(");
+                const standard_id = newValue.substring(
+                  index + 3,
+                  newValue.length - 1
+                );
+                fetchStandardInfo(
+                  `https://localhost:8080/api/standards/id?Standard_ID=${standard_id}`
+                );
+              } else {
+                mySamp.standard.level = "";
+                mySamp.standard.standard_ID = "";
+                mySamp.standard.title = "";
+                mySamp.standard.credits = "";
+                mySamp.standard.assessment = "";
+              }
+              setSampleNote(mySamp);
+            }}
+            options={standards.map((s) => s.title)}
+            sx={{ width: "50vw", mb: 3 }}
             renderInput={(params) => (
-              <TextField {...params} label="Pick a standard:" />
+              <TextField {...params} label="Enter a Standard:" />
             )}
           />
-          <Button
-            onSubmit={(e) => {
-              e.preventDefault;
-            }}
-            href="#"
-            type="submit"
+          <TextField
+            required
             fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+            id="title"
+            label="Note Title"
+            name="title"
+            sx={{ mb: 3 }}
+            onChange={(e) => {
+              let mySamp = sampleNote;
+              mySamp.file_Name = e.target.value;
+              setSampleNote(mySamp);
+            }}
+          />
+          <TextField
+            required
+            fullWidth
+            type="url"
+            id="link"
+            label="File Link URL"
+            name="link"
+            sx={{ mb: 3 }}
+          />
+          <Button type="submit" fullWidth variant="contained" sx={{ mb: 2 }}>
             Upload Note
           </Button>
+          <NoteCardDark
+            setLevel={() => {}}
+            setKeyword={() => {}}
+            setSearchQuery={() => {}}
+            searchQuery={[]}
+            setAssessment={() => {}}
+            setPage={() => {}}
+            item={sampleNote}
+          />
         </Box>
       </Box>
     </Container>
   );
 }
-
-export default Upload;

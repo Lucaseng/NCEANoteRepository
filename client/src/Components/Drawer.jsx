@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Drawer as MUIDrawer,
   List,
@@ -46,8 +46,15 @@ function Drawer({ user, setUser, setMessage, handleClose, setOpen }) {
     },
     {
       text: "Upload",
+
       icon: <UploadIcon sx={{ color: "#fff" }} />,
-      onClick: () => navigate("/upload"),
+      onClick: () => {
+        if (user != null) {
+          navigate("/upload");
+        } else {
+          alert("Login!");
+        }
+      },
     },
   ];
 

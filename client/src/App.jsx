@@ -64,7 +64,11 @@ function App() {
       </Snackbar>
       <Routes>
         <Route path="/" element={<Home />} exact />
-        <Route path="/upload" element={<Upload />} exact />
+        <Route
+          path="/upload"
+          element={<Upload user={user} setUser={setUser} />}
+          exact
+        />
         <Route
           path="/login"
           element={
