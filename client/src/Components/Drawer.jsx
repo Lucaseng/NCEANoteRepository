@@ -52,7 +52,12 @@ function Drawer({ user, setUser, setMessage, handleClose, setOpen }) {
         if (user != null) {
           navigate("/upload");
         } else {
-          alert("Login!");
+          setMessage(
+            <Alert severity="error" onClose={handleClose}>
+              You must be logged in to do that!
+            </Alert>
+          );
+          setOpen(true);
         }
       },
     },
@@ -99,7 +104,7 @@ function Drawer({ user, setUser, setMessage, handleClose, setOpen }) {
               typography: "h4",
               fontSize: "1.1em",
               textAlign: "center",
-              fontWeight: "light",
+
               m: 2,
               fontWeight: "medium",
             }}

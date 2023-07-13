@@ -66,7 +66,15 @@ function App() {
         <Route path="/" element={<Home />} exact />
         <Route
           path="/upload"
-          element={<Upload user={user} setUser={setUser} />}
+          element={
+            <Upload
+              user={user}
+              setUser={setUser}
+              setMessage={setMessage}
+              setOpen={setOpen}
+              handleClose={handleClose}
+            />
+          }
           exact
         />
         <Route

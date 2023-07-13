@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
+import jwt_decode from "jwt-decode";
 
 function NoteCardDark(props) {
   const {
@@ -23,7 +24,15 @@ function NoteCardDark(props) {
     setKeyword,
     setAssessment,
     setPage,
+    isLiked,
   } = props;
+
+  const [isLikedValue, setIsLikedValue] = useState(isLiked);
+
+  const likedColours = {
+    false: "#fff",
+    true: "#2196f3",
+  };
 
   const handleLevelClick = (event) => {
     const level = event.target.innerText;
@@ -36,6 +45,14 @@ function NoteCardDark(props) {
     setLevel(myArr[1]);
     setSearchQuery(myArr);
     setPage(1);
+  };
+
+  const handleLike = (event) => {
+    if (isLikedValue) {
+      setIsLikedValue(false);
+    } else {
+      setIsLikedValue(true);
+    }
   };
 
   const handleSubjectClick = (event) => {
@@ -201,8 +218,9 @@ function NoteCardDark(props) {
               direction="row"
             >
               <IconButton
+                onClick={handleLike}
                 sx={{
-                  color: "#fff",
+                  color: likedColours[isLikedValue],
                   "&:hover": {
                     backgroundColor: "rgba(255, 255, 255, 0.1) !important",
                   },

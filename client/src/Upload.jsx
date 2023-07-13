@@ -9,14 +9,36 @@ import {
   Link,
   Autocomplete,
   Divider,
+  Alert,
 } from "@mui/material/";
 import NoteCardDark from "./Components/NoteCardDark";
 import { fetchCurrentUser } from "./auth/authHandler";
 import jwt_decode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
-let myUser = jwt_decode(localStorage.getItem("token"));
+const token = localStorage.getItem("token");
+let myUser = {};
+if (token) {
+  myUser = jwt_decode(localStorage.getItem("token"));
+}
 
-export default function Upload({ user, setUser }) {
+function isValidUrl(string) {
+  try {
+    new URL(string);
+    return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+export default function Upload({
+  user,
+  setUser,
+  setMessage,
+  setOpen,
+  handleClose,
+}) {
+  const navigate = useNavigate();
   const [levels, setLevels] = useState(["1", "2", "3", "Scholarship"]);
   const [subjects, setSubjects] = useState([]);
   const [standards, setStandards] = useState([]);
@@ -47,6 +69,27 @@ export default function Upload({ user, setUser }) {
   });
 
   useEffect(() => {
+    const fetchSubjects = async () => {
+      let url = "https://localhost:8080/api/subjects";
+
+      fetch(url)
+        .then((response) => response.json())
+        .then((json) => {
+          if (json.fail) {
+            alert(json.fail);
+          } else {
+            let subArr = [];
+            json.forEach((obj) => {
+              subArr.push(obj["subject_name"]);
+            });
+            setSubjects(subArr);
+          }
+        })
+        .catch((error) => console.error(error));
+    };
+
+    fetchSubjects();
+
     let mySamp = sampleNote;
     let jwt = jwt_decode(localStorage.getItem("token"));
     mySamp.user = {
@@ -54,29 +97,8 @@ export default function Upload({ user, setUser }) {
       last_Name: jwt.Last_Name,
       email: jwt.Email,
     };
-    setSampleNote(mySamp);
-  });
-
-  const fetchSubjects = async () => {
-    let url = "https://localhost:8080/api/subjects";
-
-    fetch(url)
-      .then((response) => response.json())
-      .then((json) => {
-        if (json.fail) {
-          alert(json.fail);
-        } else {
-          let subArr = [];
-          json.forEach((obj) => {
-            subArr.push(obj["subject_name"]);
-          });
-          setSubjects(subArr);
-        }
-      })
-      .catch((error) => console.error(error));
-  };
-
-  fetchSubjects();
+    setSampleNote({ ...mySamp });
+  }, []);
 
   const fetchStandards = async (url) => {
     fetch(url)
@@ -109,7 +131,7 @@ export default function Upload({ user, setUser }) {
         } else {
           let mySamp = sampleNote;
           mySamp.standard = json;
-          setSampleNote(mySamp);
+          setSampleNote({ ...mySamp });
         }
       })
       .catch((error) => console.error(error));
@@ -121,7 +143,7 @@ export default function Upload({ user, setUser }) {
       sx={{ display: "flex", flexDirection: "column", mt: 3 }}
     >
       <Typography variant="h4" sx={{ pb: 3, fontWeight: "medium" }}>
-        Upload a Note
+        Note Builder
       </Typography>
       <Divider sx={{ mb: 5 }} />
       <Box
@@ -138,17 +160,79 @@ export default function Upload({ user, setUser }) {
           component="form"
           onSubmit={(e) => {
             e.preventDefault();
-            alert(e.target.subject.value);
-            alert(e.target.level.value);
-            const index = e.target.standard.value.lastIndexOf("(");
-            const standard_id = e.target.standard.value.substring(
-              index + 1,
-              e.target.standard.value.length - 1
-            );
-            alert(standard_id);
+            if (
+              !sampleNote.standard.standard_ID ||
+              !e.target.link.value ||
+              !e.target.title.value
+            ) {
+              setMessage(
+                <Alert severity="error" onClose={handleClose}>
+                  Please complete the entire form!
+                </Alert>
+              );
+              setOpen(true);
+              return;
+            } else if (!isValidUrl(e.target.link.value)) {
+              setMessage(
+                <Alert severity="error" onClose={handleClose}>
+                  The link you have entered is not valid!
+                </Alert>
+              );
+              setOpen(true);
+              return;
+            }
+            const fetchData = async () => {
+              let url = "https://localhost:8080/api/notes";
+
+              fetch(url, {
+                method: "POST",
+                headers: {
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ` + token,
+                },
+                body: JSON.stringify({
+                  standard_ID: sampleNote.standard.standard_ID,
+                  user_ID: myUser.Id,
+                  file: e.target.link.value,
+                  file_Name: e.target.title.value,
+                }),
+              })
+                .then((response) => response.json())
+                .then(async (json) => {
+                  if (json.fail) {
+                    setMessage(
+                      <Alert severity="error" onClose={handleClose}>
+                        {`Note creation failed - ${json.fail}`}
+                      </Alert>
+                    );
+                  } else {
+                    setMessage(
+                      <Alert severity="success" onClose={handleClose}>
+                        Note created succesfully!
+                      </Alert>
+                    );
+
+                    navigate("/");
+                  }
+                  setOpen(true);
+                })
+                .catch((error) => {
+                  setMessage(
+                    <Alert severity="error" onClose={handleClose}>
+                      {`Note creation failed - ${error}`}
+                    </Alert>
+                  );
+                  setOpen(true);
+                });
+            };
+
+            fetchData();
           }}
           noValidate
-          sx={{ mt: 1 }}
+          sx={{
+            mt: 1,
+          }}
         >
           <Autocomplete
             id="subject"
@@ -172,7 +256,7 @@ export default function Upload({ user, setUser }) {
               mySamp.standard.credits = "";
               mySamp.standard.assessment = "";
 
-              setSampleNote(mySamp);
+              setSampleNote({ ...mySamp });
             }}
             options={subjects}
             sx={{ width: "50vw", mb: 3 }}
@@ -206,7 +290,7 @@ export default function Upload({ user, setUser }) {
                 mySamp.standard.assessment = "";
               }
 
-              setSampleNote(mySamp);
+              setSampleNote({ ...mySamp });
             }}
             sx={{ width: "50vw", mb: 3 }}
             options={levels}
@@ -237,7 +321,7 @@ export default function Upload({ user, setUser }) {
                 mySamp.standard.credits = "";
                 mySamp.standard.assessment = "";
               }
-              setSampleNote(mySamp);
+              setSampleNote({ ...mySamp });
             }}
             options={standards.map((s) => s.title)}
             sx={{ width: "50vw", mb: 3 }}
@@ -255,7 +339,7 @@ export default function Upload({ user, setUser }) {
             onChange={(e) => {
               let mySamp = sampleNote;
               mySamp.file_Name = e.target.value;
-              setSampleNote(mySamp);
+              setSampleNote({ ...mySamp });
             }}
           />
           <TextField
@@ -263,6 +347,8 @@ export default function Upload({ user, setUser }) {
             fullWidth
             type="url"
             id="link"
+            placeholder="https://www.drive.google.com/myFile"
+            defaultValue="https://"
             label="File Link URL"
             name="link"
             sx={{ mb: 3 }}
@@ -278,6 +364,8 @@ export default function Upload({ user, setUser }) {
             setAssessment={() => {}}
             setPage={() => {}}
             item={sampleNote}
+            isLiked={false}
+            key={sampleNote}
           />
         </Box>
       </Box>

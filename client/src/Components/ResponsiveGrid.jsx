@@ -3,6 +3,26 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import NoteCardDark from "./NoteCardDark";
 import { Typography, CircularProgress, Stack, Pagination } from "@mui/material";
+import jwt_decode from "jwt-decode";
+
+const token = localStorage.getItem("token");
+let myUser = {};
+let likedNotes = [];
+if (token) {
+  myUser = jwt_decode(localStorage.getItem("token"));
+  const fetchLikedNotes = async () => {
+    let url = `https://localhost:8080/api/kudos/id?id=${myUser.Id}`;
+
+    fetch(url)
+      .then((response) => response.json())
+      .then((json) => {
+        likedNotes = json;
+      })
+      .catch((error) => console.error(error));
+  };
+
+  fetchLikedNotes();
+}
 
 function ResponsiveGrid({
   searchQuery,
@@ -14,6 +34,7 @@ function ResponsiveGrid({
   setPage,
 }) {
   const [data, setData] = useState();
+
   const [totalPageNumber, setTotalPageNumber] = useState(1);
 
   const handlePagination = (event, value) => {
@@ -78,6 +99,7 @@ function ResponsiveGrid({
               searchQuery={searchQuery}
               setAssessment={SetAssessment}
               setPage={setPage}
+              isLiked={likedNotes.includes(i.note_ID)}
             />
           </Grid>
         ))}
