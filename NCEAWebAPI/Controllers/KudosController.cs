@@ -25,6 +25,14 @@ namespace NCEAWebRepo.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("id")]
+        public ActionResult<IEnumerable<int>> GetKudosByUserId(int id)
+        {
+            IEnumerable<int> kudos = _repository.GetKudosByUserId(id);
+            return Ok(kudos);
+        }
+
+        [AllowAnonymous]
         [HttpGet("count")]
         public ActionResult<int> GetKudosCount(int Note_ID)
         {
