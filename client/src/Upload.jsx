@@ -15,6 +15,7 @@ import NoteCardDark from "./Components/NoteCardDark";
 import { fetchCurrentUser } from "./auth/authHandler";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import useAuthContext from "./auth/useAuthContext";
 
 const token = localStorage.getItem("token");
 let myUser = {};
@@ -39,6 +40,7 @@ export default function Upload({
   handleClose,
 }) {
   const navigate = useNavigate();
+  const myUser = useAuthContext();
   const [levels, setLevels] = useState(["1", "2", "3", "Scholarship"]);
   const [subjects, setSubjects] = useState([]);
   const [standards, setStandards] = useState([]);
@@ -62,9 +64,9 @@ export default function Upload({
       },
     },
     user: {
-      first_Name: myUser.First_Name,
-      last_Name: myUser.Last_Name,
-      email: myUser.Email,
+      first_Name: "",
+      last_Name: "",
+      email: "",
     },
   });
 

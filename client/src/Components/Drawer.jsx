@@ -20,8 +20,12 @@ import HomeIcon from "@mui/icons-material/Home";
 import UploadIcon from "@mui/icons-material/Upload";
 import LoginIcon from "@mui/icons-material/Login";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import useAuthContext from "../auth/useAuthContext";
 
 function Drawer({ user, setUser, setMessage, handleClose, setOpen }) {
+  const myUser = useAuthContext();
+  const realUser = myUser.user;
+
   const theme = useTheme();
   const navigate = useNavigate();
 

@@ -2,7 +2,14 @@ import React, { useState } from "react";
 import { Container, Typography, Divider, Pagination } from "@mui/material/";
 import ResponsiveGrid from "./Components/ResponsiveGrid";
 import Search from "./Components/Search";
-function Home(props) {
+function Home({
+  user,
+  accountChange,
+  setAccountChange,
+  setUser,
+  setMessage,
+  setOpen,
+}) {
   const [searchQuery, setSearchQuery] = useState(["", "", ""]);
   const [level, setLevel] = useState("");
   const [keyword, SetKeyword] = React.useState("");
@@ -35,6 +42,12 @@ function Home(props) {
           SetAssessment={SetAssessment}
           page={page}
           setPage={setPage}
+          user={user}
+          accountChange={accountChange}
+          setAccountChange={setAccountChange}
+          setUser={setUser}
+          setMessage={setMessage}
+          setOpen={setOpen}
         />
       </Container>
     </>

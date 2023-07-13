@@ -10,10 +10,11 @@ namespace NCEAWebRepo.Controllers
     public class KudosController : Controller
     {
         private readonly IKudosRepo _repository;
-
-        public KudosController(IKudosRepo repository)
+        private readonly IConfiguration _config;
+        public KudosController(IKudosRepo repository, IConfiguration config)
         {
             _repository = repository;
+            _config = config;
         }
 
         [AllowAnonymous]
@@ -44,6 +45,7 @@ namespace NCEAWebRepo.Controllers
         [HttpPost()]
         public ActionResult<String> GiveKudos(KudosInputDto kudos)
         {
+
             if (_repository.CanAwardKudos(kudos))
             {
                 return Ok(_repository.GiveKudos(kudos));
@@ -53,6 +55,30 @@ namespace NCEAWebRepo.Controllers
                 return BadRequest(new FailDto
                 {
                     fail = String.Format("User {0} has already given kudos for Note {1}!", kudos.User_ID, kudos.Note_ID)
+                });
+            }
+
+
+        }
+
+        [Authorize(Roles = "User, Admin")]
+        [HttpDelete()]
+        public ActionResult<String> DeleteKudosByNoteId(int NoteId)
+        {
+            int userId = Int32.Parse(User.FindFirst("Id").Value);
+
+
+
+
+            if (_repository.CanDeleteKudos(NoteId, userId))
+            {
+                return Ok(_repository.DeleteKudos(NoteId));
+            }
+            else
+            {
+                return BadRequest(new FailDto
+                {
+                    fail = String.Format("You are not authorized to delete this kudo!")
                 });
             }
 

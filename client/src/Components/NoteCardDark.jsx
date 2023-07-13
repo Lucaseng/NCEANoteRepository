@@ -10,10 +10,12 @@ import {
   IconButton,
   Fade,
   Grow,
+  Alert,
 } from "@mui/material";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import jwt_decode from "jwt-decode";
+import useAuthContext from "../auth/useAuthContext";
 
 function NoteCardDark(props) {
   const {
@@ -25,9 +27,17 @@ function NoteCardDark(props) {
     setAssessment,
     setPage,
     isLiked,
+    user,
+    setMessage,
+    setOpen,
+    handleClose,
   } = props;
 
+  //const myUser = useAuthContext();
+  const realUser = user;
+
   const [isLikedValue, setIsLikedValue] = useState(isLiked);
+  const [kudos, setKudos] = useState(item.kudos);
 
   const likedColours = {
     false: "#fff",
@@ -48,10 +58,76 @@ function NoteCardDark(props) {
   };
 
   const handleLike = (event) => {
+    if (!user) {
+      setMessage(
+        <Alert severity="error" onClose={handleClose}>
+          You must be logged in to do that!
+        </Alert>
+      );
+      setOpen(true);
+      return;
+    }
     if (isLikedValue) {
       setIsLikedValue(false);
+      const fetchData = async () => {
+        let url = `https://localhost:8080/api/kudos?NoteId=${item.note_ID}`;
+
+        fetch(url, {
+          method: "DELETE",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ` + localStorage.getItem("token"),
+          },
+        })
+          .then((response) => response.json())
+          .then(async (json) => {
+            if (json.fail) {
+              console.log(json.fail);
+            } else {
+              //handle like
+              setKudos(kudos - 1);
+            }
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      };
+
+      fetchData();
     } else {
       setIsLikedValue(true);
+      const fetchData = async () => {
+        let url = "https://localhost:8080/api/kudos";
+
+        fetch(url, {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ` + localStorage.getItem("token"),
+          },
+
+          body: JSON.stringify({
+            user_ID: realUser.user_ID,
+            note_ID: item.note_ID,
+          }),
+        })
+          .then((response) => response.json())
+          .then(async (json) => {
+            if (json.fail) {
+              console.log(json.fail);
+            } else {
+              //handle like
+              setKudos(kudos + 1);
+            }
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      };
+
+      fetchData();
     }
   };
 
@@ -228,7 +304,7 @@ function NoteCardDark(props) {
               >
                 <ThumbUpAltIcon />
               </IconButton>
-              <Typography sx={{ mr: 2 }}>{item.kudos}</Typography>
+              <Typography sx={{ mr: 2 }}>{kudos}</Typography>
             </Stack>
           </CardActions>
         </Card>

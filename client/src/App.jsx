@@ -10,27 +10,24 @@ import Signup from "./Signup";
 import { Route, Routes } from "react-router-dom";
 import { Box, Snackbar } from "@mui/material";
 import { fetchCurrentUser } from "./auth/authHandler";
+import useAuthContext from "./auth/useAuthContext";
 
 function App() {
+  const myUser = useAuthContext();
+
   const [user, setUser] = useState();
+  const [signedOut, setSignedOut] = useState(true);
   const [message, setMessage] = useState();
   const [open, setOpen] = useState(false);
+  const [accountChange, setAccountChange] = useState(false);
 
   useEffect(() => {
-    const checkUser = async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        await fetchCurrentUser(token)
-          .then((response) => response.json())
-          .then((json) => {
-            setUser(json);
-          })
-          .catch((error) => console.error(error));
-      }
-    };
+    setUser(myUser.user);
+  }, [myUser]);
 
-    checkUser();
-  }, []);
+  useEffect(() => {
+    setAccountChange(true);
+  }, [user]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -53,6 +50,7 @@ function App() {
         setMessage={setMessage}
         setOpen={setOpen}
         handleClose={handleClose}
+        setSignedOut={setSignedOut}
       />
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -63,7 +61,20 @@ function App() {
         {message}
       </Snackbar>
       <Routes>
-        <Route path="/" element={<Home />} exact />
+        <Route
+          path="/"
+          element={
+            <Home
+              user={user}
+              accountChange={accountChange}
+              setAccountChange={setAccountChange}
+              setUser={setUser}
+              setMessage={setMessage}
+              setOpen={setOpen}
+            />
+          }
+          exact
+        />
         <Route
           path="/upload"
           element={

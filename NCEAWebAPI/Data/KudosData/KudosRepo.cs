@@ -67,6 +67,39 @@ namespace NCEAWebRepo.Data.KudosData
             _dbContext.SaveChanges();
             return CreateKudosOutputDto(awardedKudos);
         }
+        public bool CanDeleteKudos(int noteId, int userId)
+        {
+            Kudos kudos = _dbContext.Kudos.FirstOrDefault(k => k.Note.Note_ID == noteId && k.User.User_ID == userId);
+
+            return (kudos != null);
+        }
+        public bool DeleteKudos(int noteId)
+        {
+            try
+            {
+                Kudos kudos = _dbContext.Kudos.FirstOrDefault(k => k.Note.Note_ID == noteId);
+                _dbContext.Remove(kudos);
+                _dbContext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        public IEnumerable<int> GetKudosByUserId(int id)
+        {
+            IEnumerable<Kudos> kudos = _dbContext.Kudos.Where(k => k.User.User_ID == id).Include(k => k.User).Include(k => k.Note).ToList<Kudos>();
+            List<int> newKudos = new List<int>();
+            foreach (Kudos k in kudos)
+            {
+                newKudos.Add(k.Note.Note_ID);
+            }
+            return newKudos;
+
+        }
 
 
 
