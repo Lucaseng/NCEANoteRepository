@@ -21,8 +21,16 @@ namespace NCEAWebRepo.Controllers
         [HttpGet()]
         public ActionResult<IEnumerable<KudosOutputDto>> AllKudos()
         {
-            IEnumerable<KudosOutputDto> kudos = _repository.GetKudos();
-            return Ok(kudos);
+            try
+            {
+                IEnumerable<KudosOutputDto> kudos = _repository.GetKudos();
+                return Ok(kudos);
+            }
+            catch (Exception ex)
+            {
+                return Ok("There was error");
+            }
+
         }
 
         [AllowAnonymous]

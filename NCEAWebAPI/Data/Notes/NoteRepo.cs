@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NCEAWebRepo.Dtos;
 using NCEAWebRepo.Models;
-using System.Collections;
 
 namespace NCEAWebRepo.Data.Notes
 {
@@ -21,53 +20,42 @@ namespace NCEAWebRepo.Data.Notes
             return notes;
         }
 
-        public ArrayList SearchNotes(int endIndex, int startIndex, String keyword, String level, String assessment)
+        public List<object> SearchNotes(int endIndex, int startIndex, string keyword, string level, string assessment)
         {
-
             if (endIndex == 0)
             {
                 endIndex = 99;
             }
 
+            List<Note> finalNotes;
 
-
-            IEnumerable<Note> finalNotes = new List<Note>();
-            //Fetch Notes from Database
-            if (keyword == "" && level == "" && assessment == "")
+            if (string.IsNullOrEmpty(keyword) && string.IsNullOrEmpty(level) && string.IsNullOrEmpty(assessment))
             {
-                finalNotes = GetNotes();
+                finalNotes = GetNotes().ToList();
             }
             else
             {
                 var notes = _dbContext.Note.Where(n => n == n);
-                if (keyword != "")
+                if (!string.IsNullOrEmpty(keyword))
                 {
                     notes = notes.Where(n => n.Standard.Title.ToLower().Contains(keyword.ToLower()) || n.Standard.Standard_ID.ToString().Contains(keyword) || n.Standard.Subject.Subject_name.ToLower().Contains(keyword.ToLower()));
                 }
-                if (level != "")
+                if (!string.IsNullOrEmpty(level))
                 {
                     notes = notes.Where(n => n.Standard.Level.Contains(level));
                 }
-                if (assessment != "")
+                if (!string.IsNullOrEmpty(assessment))
                 {
                     notes = notes.Where(n => n.Standard.Assessment == assessment);
                 }
 
-
-                finalNotes = notes.Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").ToList<Note>();
+                finalNotes = notes.Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").ToList();
             }
 
-            int myInitialQueryLength = finalNotes.Count();
-
-
-
-            //Initialise an array of NoteOutputDto objects
             List<NoteOutputDto> notesArr = new List<NoteOutputDto>();
             foreach (Note n in finalNotes)
             {
-                //Get the Kudos Count for each Note, n
-                int kudosCount = _dbContext.Kudos.Where(k => k.Note.Note_ID == n.Note_ID).Count();
-                //Create NoteOutputDto and add it to the array above
+                int kudosCount = _dbContext.Kudos.Count(k => k.Note.Note_ID == n.Note_ID);
                 notesArr.Add(new NoteOutputDto
                 {
                     Note_ID = n.Note_ID,
@@ -75,7 +63,6 @@ namespace NCEAWebRepo.Data.Notes
                     File = n.File,
                     File_Name = n.File_Name,
                     Standard = n.Standard,
-                    //Create an anonymous UserOutputDto, as we want to hide particular data from the end-users.
                     User = new UserOutputDto
                     {
                         User_ID = n.User.User_ID,
@@ -89,13 +76,13 @@ namespace NCEAWebRepo.Data.Notes
 
             IEnumerable<NoteOutputDto> myNotes = notesArr.OrderByDescending(n => n.Kudos);
             myNotes = myNotes.Skip(startIndex).Take(endIndex - startIndex + 1);
-            ArrayList myArrayList = new ArrayList
-            {
-                myInitialQueryLength,
-                myNotes
-            };
-            return myArrayList;
 
+            List<object> myArrayList = new List<object>
+    {
+        finalNotes.Count,
+        myNotes.ToList()
+    };
+            return myArrayList;
         }
 
         public Note GetNoteByID(int id)
@@ -135,6 +122,72 @@ namespace NCEAWebRepo.Data.Notes
             _dbContext.SaveChanges();
             return myNote;
         }
+        public async Task<List<object>> SearchNotesAsync(int endIndex, int startIndex, string keyword, string level, string assessment)
+        {
+            if (endIndex == 0)
+            {
+                endIndex = 99;
+            }
+
+            List<Note> finalNotes;
+
+            if (string.IsNullOrEmpty(keyword) && string.IsNullOrEmpty(level) && string.IsNullOrEmpty(assessment))
+            {
+                finalNotes = GetNotes().ToList();
+            }
+            else
+            {
+                var notes = _dbContext.Note.Where(n => n == n);
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    notes = notes.Where(n => n.Standard.Title.ToLower().Contains(keyword.ToLower()) || n.Standard.Standard_ID.ToString().Contains(keyword) || n.Standard.Subject.Subject_name.ToLower().Contains(keyword.ToLower()));
+                }
+                if (!string.IsNullOrEmpty(level))
+                {
+                    notes = notes.Where(n => n.Standard.Level.Contains(level));
+                }
+                if (!string.IsNullOrEmpty(assessment))
+                {
+                    notes = notes.Where(n => n.Standard.Assessment == assessment);
+                }
+
+                finalNotes = await notes.Include(n => n.Standard).ThenInclude(s => s.Subject).Include("User").ToListAsync();
+            }
+
+            List<NoteOutputDto> notesArr = new List<NoteOutputDto>();
+            foreach (Note n in finalNotes)
+            {
+                int kudosCount = _dbContext.Kudos.Count(k => k.Note.Note_ID == n.Note_ID);
+                notesArr.Add(new NoteOutputDto
+                {
+                    Note_ID = n.Note_ID,
+                    Kudos = kudosCount,
+                    File = n.File,
+                    File_Name = n.File_Name,
+                    Standard = n.Standard,
+                    User = new UserOutputDto
+                    {
+                        User_ID = n.User.User_ID,
+                        First_Name = n.User.First_Name,
+                        Last_Name = n.User.Last_Name,
+                        Email = n.User.Email,
+                        School = n.User.School,
+                    }
+                });
+            }
+
+            IEnumerable<NoteOutputDto> myNotes = notesArr.OrderByDescending(n => n.Kudos);
+            myNotes = myNotes.Skip(startIndex).Take(endIndex - startIndex + 1);
+
+            List<object> myArrayList = new List<object>
+    {
+        finalNotes.Count,
+        myNotes.ToList()
+    };
+
+            return myArrayList;
+        }
+
 
 
     }

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using NCEAWebRepo.Data.Notes;
 using NCEAWebRepo.Dtos;
 using NCEAWebRepo.Models;
-using System.Collections;
 
 namespace NCEAWebRepo.Controllers
 {
@@ -26,10 +25,19 @@ namespace NCEAWebRepo.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet("search")]
-        public ActionResult<ArrayList> Search(int endIndex, int startIndex = 0, String? keyword = "", String? level = "", String? assessment = "")
+        [HttpGet("searchAsync")]
+        public ActionResult<List<object>> SearchAsync(int endIndex, int startIndex = 0, String? keyword = "", String? level = "", String? assessment = "")
         {
-            ArrayList notes = _repository.SearchNotes(endIndex, startIndex, keyword, level, assessment);
+            Task<List<object>> notes = _repository.SearchNotesAsync(endIndex, startIndex, keyword, level, assessment);
+            return Ok(notes);
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet("search")]
+        public ActionResult<List<object>> Search(int endIndex, int startIndex = 0, String? keyword = "", String? level = "", String? assessment = "")
+        {
+            List<object> notes = _repository.SearchNotes(endIndex, startIndex, keyword, level, assessment);
             return Ok(notes);
         }
 
