@@ -72,7 +72,7 @@ export default function Upload({
 
   useEffect(() => {
     const fetchSubjects = async () => {
-      let url = "https://localhost:8080/api/subjects";
+      let url = import.meta.env.VITE_APP_API_URL + "/api/subjects";
 
       fetch(url)
         .then((response) => response.json())
@@ -184,7 +184,7 @@ export default function Upload({
               return;
             }
             const fetchData = async () => {
-              let url = "https://localhost:8080/api/notes";
+              let url = import.meta.env.VITE_APP_API_URL + "/api/notes";
 
               fetch(url, {
                 method: "POST",
@@ -275,7 +275,7 @@ export default function Upload({
               setStandardValue(null);
 
               fetchStandards(
-                `https://localhost:8080/api/standards/search?subject=${value}&level=${newValue}`
+                `https://mydeployncea.azurewebsites.net/api/standards/search?subject=${value}&level=${newValue}`
               );
 
               let mySamp = sampleNote;
@@ -314,7 +314,7 @@ export default function Upload({
                   newValue.length - 1
                 );
                 fetchStandardInfo(
-                  `https://localhost:8080/api/standards/id?Standard_ID=${standard_id}`
+                  `https://mydeployncea.azurewebsites.net/api/standards/id?Standard_ID=${standard_id}`
                 );
               } else {
                 mySamp.standard.level = "";

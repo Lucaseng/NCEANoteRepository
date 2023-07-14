@@ -102,7 +102,7 @@ function Drawer({ user, setUser, setMessage, handleClose, setOpen }) {
           direction="row"
         >
           {" "}
-          <img height="30em" src="../../public/books.svg" />
+          <img height="30em" src="../../books.svg" />
           <Box
             sx={{
               typography: "h4",

@@ -70,7 +70,7 @@ function NoteCardDark(props) {
     if (isLikedValue) {
       setIsLikedValue(false);
       const fetchData = async () => {
-        let url = `https://localhost:8080/api/kudos?NoteId=${item.note_ID}`;
+        let url = `https://mydeployncea.azurewebsites.net/api/kudos?NoteId=${item.note_ID}`;
 
         fetch(url, {
           method: "DELETE",
@@ -98,7 +98,7 @@ function NoteCardDark(props) {
     } else {
       setIsLikedValue(true);
       const fetchData = async () => {
-        let url = "https://localhost:8080/api/kudos";
+        let url = import.meta.env.VITE_APP_API_URL + "/api/kudos";
 
         fetch(url, {
           method: "POST",
@@ -169,13 +169,13 @@ function NoteCardDark(props) {
         <Card
           sx={{
             borderRadius: "10px",
-            height: "270px",
+            height: "280px",
             display: "flex",
             flexDirection: "column",
             color: "#fff",
             backgroundColor: "#233044",
             boxShadow: 1,
-            width: "450px",
+            maxWidth: "450px",
             "&:hover": {
               boxShadow: 6,
               borderColor: "neutral.outlinedHoverBorder",
@@ -189,7 +189,7 @@ function NoteCardDark(props) {
               direction="row"
               sx={{ mb: 3 }}
             >
-              <Stack direction="row" spacing={1}>
+              <Stack sx={{ maxWidth: "20vw" }} direction="row" spacing={1}>
                 <Chip
                   key={item.standard.level}
                   onClick={(e) => handleLevelClick(e)}

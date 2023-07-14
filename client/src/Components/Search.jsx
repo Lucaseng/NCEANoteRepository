@@ -60,7 +60,7 @@ function Search({
 
   return (
     <>
-      <Stack width="40vw">
+      <Stack sx={{ width: { xs: "75vw", md: "60vw" } }}>
         <TextField
           value={keyword}
           onChange={(e) => handleInputChange(e)}
@@ -95,7 +95,7 @@ function Search({
               <MenuItem value={"Scholarship"}>Scholarship</MenuItem>
             </Select>
           </FormControl>
-          <FormControl sx={{ mt: 1.2, mr: 1.2, minWidth: "20%" }} size="small">
+          <FormControl sx={{ mt: 1.2, mr: 1.2, minWidth: "10em" }} size="small">
             <InputLabel id="ass-label">Assessment</InputLabel>
             <Select
               labelId="ass-label"

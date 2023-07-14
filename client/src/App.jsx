@@ -7,10 +7,12 @@ import Upload from "./Upload";
 import Home from "./Home";
 import Login from "./Login";
 import Signup from "./Signup";
+import ResponsiveDrawer from "./Components/ResponsiveDrawer";
 import { Route, Routes } from "react-router-dom";
 import { Box, Snackbar } from "@mui/material";
 import { fetchCurrentUser } from "./auth/authHandler";
 import useAuthContext from "./auth/useAuthContext";
+//require("dotenv").config();
 
 function App() {
   const myUser = useAuthContext();
@@ -44,14 +46,6 @@ function App() {
       }}
       className={"container"}
     >
-      <Drawer
-        user={user}
-        setUser={setUser}
-        setMessage={setMessage}
-        setOpen={setOpen}
-        handleClose={handleClose}
-        setSignedOut={setSignedOut}
-      />
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         open={open}
@@ -60,6 +54,14 @@ function App() {
       >
         {message}
       </Snackbar>
+      <ResponsiveDrawer
+        user={user}
+        setUser={setUser}
+        setMessage={setMessage}
+        setOpen={setOpen}
+        handleClose={handleClose}
+        setSignedOut={setSignedOut}
+      ></ResponsiveDrawer>
       <Routes>
         <Route
           path="/"

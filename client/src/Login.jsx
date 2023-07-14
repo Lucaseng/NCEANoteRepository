@@ -31,7 +31,7 @@ function Login({ setUser, setMessage, setOpen }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const fetchData = async () => {
-      let url = "https://localhost:8080/api/auth";
+      let url = import.meta.env.VITE_APP_API_URL + "/api/auth";
 
       fetch(url, {
         method: "POST",

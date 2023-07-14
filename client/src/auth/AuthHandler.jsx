@@ -1,5 +1,5 @@
 const fetchCurrentUser = async (token) => {
-  let url = "https://localhost:8080/api/users/me";
+  let url = "https://mydeployncea.azurewebsites.net/api/users/me";
 
   return fetch(url, {
     method: "POST",

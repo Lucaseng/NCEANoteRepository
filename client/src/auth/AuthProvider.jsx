@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const getUserPromise = (token) => {
-    return fetch("https://localhost:8080/api/users/me", {
+    return fetch(import.meta.env.VITE_APP_API_URL + "/api/users/me", {
       method: "POST",
       headers: {
         Accept: "application/json",

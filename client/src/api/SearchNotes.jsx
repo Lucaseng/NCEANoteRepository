@@ -4,7 +4,7 @@ function SearchNotes() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch("https://localhost:8080/api/notes/search")
+    fetch(import.meta.env.VITE_APP_API_URL + "/api/notes/searchAsync")
       .then((response) => response.json())
       .then((json) => setData(json))
       .catch((error) => console.error(error));

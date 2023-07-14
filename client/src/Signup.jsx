@@ -35,7 +35,7 @@ function Signup({ setMessage, setOpen }) {
     e.preventDefault();
 
     const fetchData = async () => {
-      let url = "https://localhost:8080/api/users";
+      let url = import.meta.env.VITE_APP_API_URL + "/api/users";
 
       fetch(url, {
         method: "POST",
