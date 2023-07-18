@@ -1,11 +1,24 @@
 # NCEA Note Repository
 NCEA Note Repository is a web application allowing high-school students to collate and share their NCEA notes.
 
+![C#](https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=c-sharp&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![.Net](https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=mui&logoColor=white)
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white)
+![Google Cloud](https://img.shields.io/badge/GoogleCloud-%234285F4.svg?style=for-the-badge&logo=google-cloud&logoColor=white)
+#
+
 ![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/55993516-6b67-493f-abe5-7e66d3737a34)
 ![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/6e526b9c-e3c0-462a-a328-ead0f42e3a93)
 ![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/9a6be1fc-8ee3-437b-bdfb-8201ff4324f5)
 ![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/48f78639-dd3c-46a5-8ccc-c6788984328d)
 
+## Dependencies
+The following environment variables are required for the client-side application:
+- VITE_APP_API_URL - The URL for API calls e.g. https://localhost:8080
 
 ## Database Development
 ### Web-Scraping
@@ -42,25 +55,23 @@ I am using the classic MVC Architecture to write this API. The folder structure 
 
 <img src="https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/2f11dc4c-1d4c-4c4b-bdec-38ea0bc35f6a" height="400">
 
-## Project Management
-I am trying out Asana to manage my workflow.
-
-![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/92d2f8e6-8dfe-4012-ab76-c2f0a1d7bc49)
-
-Update 5/07/23: Using Asana for project management is proving to be a reasonably successful technique. 
-![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/07f2c3dd-3538-4dcf-9de0-724b681b7f2f)
-
-
 ## Frontend Development
 
-The frontend is being written using React.js and MUI.
+The frontend was written using React.js and MUI.
 
 Technology:
 - React.js v18.2.0
 - MUI v5.13.7
 - JavaScript (ES6+)
 
-Initial project setup and sidebar creation has been completed. Routing to different pages has also been accomplished.
-The project gallery has been setup with searching and filtering functionality complete.
-Pagination has now been implemented.
-My next step will be to implement logging in and signing up, such that additional functionality can then be implemented. 
+Features include:
+- Home Page: This page allows users to search and filter through all avaliable notes. Signed in users can award kudos as desired.
+- Upload Page: This page allows logged-in users to 'build a note'. By filling in the form, a demo Note-card uses React-States to update live; Allowing the user to see how their note will be formatted in real time. 
+- Login Page: Allows a user to login
+- Sign-up Page: Allows a user to signup. Users must sign up with a domain ending in .school.nz.
+
+## Project Management
+I used Asana to manage this project. I found that it was a relatively easy way to visualise progress:
+
+![image](https://github.com/Lucaseng/NCEANoteRepository/assets/26078574/a0453d56-77b4-46ba-8f24-6adecb4309e2)
+
