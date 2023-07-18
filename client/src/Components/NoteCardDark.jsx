@@ -33,8 +33,8 @@ function NoteCardDark(props) {
     handleClose,
   } = props;
 
-  //const myUser = useAuthContext();
-  const realUser = user;
+  const myUser = useAuthContext();
+  const realUser = myUser.user;
 
   const [isLikedValue, setIsLikedValue] = useState(isLiked);
   const [kudos, setKudos] = useState(item.kudos);
@@ -58,7 +58,7 @@ function NoteCardDark(props) {
   };
 
   const handleLike = (event) => {
-    if (!user) {
+    if (!realUser) {
       setMessage(
         <Alert severity="error" onClose={handleClose}>
           You must be logged in to do that!
