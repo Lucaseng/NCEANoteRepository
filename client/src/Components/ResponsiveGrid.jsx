@@ -47,6 +47,7 @@ function ResponsiveGrid({
   });
   const [likedNotes, setLikedNotes] = useState([]);
   const [data, setData] = useState();
+  const [myToken, setMyToken] = useState(localStorage.getItem("token"));
 
   const [totalPageNumber, setTotalPageNumber] = useState(1);
 
@@ -56,6 +57,7 @@ function ResponsiveGrid({
 
   useEffect(() => {
     if (user) {
+      console.log(user);
       const fetchLikedNotes = async () => {
         let url = `https://mydeployncea.azurewebsites.net/api/kudos/id?id=${user.user_ID}`;
 

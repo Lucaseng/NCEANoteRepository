@@ -33,11 +33,20 @@ function NoteCardDark(props) {
     handleClose,
   } = props;
 
-  const myUser = useAuthContext();
-  const realUser = myUser.user;
-
   const [isLikedValue, setIsLikedValue] = useState(isLiked);
   const [kudos, setKudos] = useState(item.kudos);
+  const [myToken, setMyToken] = useState(localStorage.getItem("token"));
+
+  const myUser = useAuthContext();
+  let realUser = myUser.user;
+
+  if (localStorage.getItem("token")) {
+    realUser = jwt_decode(localStorage.getItem("token"));
+  } else {
+    realUser = null;
+  }
+
+  useEffect(() => {}, [myToken]);
 
   const likedColours = {
     false: "#fff",
@@ -109,7 +118,7 @@ function NoteCardDark(props) {
           },
 
           body: JSON.stringify({
-            user_ID: realUser.user_ID,
+            user_ID: realUser.Id,
             note_ID: item.note_ID,
           }),
         })

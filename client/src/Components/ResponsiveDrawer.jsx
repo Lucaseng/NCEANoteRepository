@@ -132,6 +132,7 @@ function ResponsiveDrawer(props) {
           </ListItem>
         ))}
       </List>
+
       <Divider></Divider>
       {user ? (
         <>

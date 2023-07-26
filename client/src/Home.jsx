@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Container, Typography, Divider, Pagination } from "@mui/material/";
 import ResponsiveGrid from "./Components/ResponsiveGrid";
 import Search from "./Components/Search";
+import { useEffect } from "react";
 function Home({
   user,
   accountChange,
@@ -15,6 +16,11 @@ function Home({
   const [keyword, SetKeyword] = React.useState("");
   const [assessment, SetAssessment] = React.useState("");
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    setSearchQuery(["", "", ""]);
+  }, []);
+
   return (
     <>
       <Container maxWidth="xl" sx={{ mt: 3 }}>
